@@ -28,49 +28,6 @@ import catalogPdf from "@/data/KATALOG LOKA RAK_compressed.pdf";
 		</div>
 	</section>
 
-	<section class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
-		<div class="mb-8 text-center">
-			<span class="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-4 py-1 text-xs font-semibold tracking-wide text-primary">
-				Katalog Digital
-			</span>
-			<h2 class="mt-4 text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl">
-				Katalog Lengkap Rak Kami
-			</h2>
-			<p class="mx-auto mt-3 max-w-2xl text-base text-muted-foreground">
-				Jelajahi semua varian rak, meja kasir, dan aksesoris secara detail
-				langsung dari katalog kami di bawah ini.
-			</p>
-			<div class="mt-6 flex flex-wrap items-center justify-center gap-3">
-				<a
-					href={catalogPdf}
-					target="_blank"
-					rel="noopener noreferrer"
-					class={buttonVariants({ size: "lg" })}
-				>
-					<ExternalLink class="size-4" />
-					Buka Katalog PDF
-				</a>
-				<a
-					href={catalogPdf}
-					download="KATALOG LOKA RAK.pdf"
-					class={buttonVariants({ size: "lg", variant: "outline" })}
-				>
-					<Download class="size-4" />
-					Unduh PDF
-				</a>
-			</div>
-		</div>
-
-		<div class="overflow-hidden rounded-2xl border border-primary/20 bg-secondary/40 p-2 shadow-lg sm:p-4">
-			<iframe
-				src={`${catalogPdf}#toolbar=1&navpanes=0`}
-				title="Katalog Produk Media Jaya Rak"
-				class="h-[75vh] w-full rounded-xl border-0 bg-white sm:h-[85vh]"
-				loading="lazy"
-			></iframe>
-		</div>
-	</section>
-
 	<ProdukKamiProductsSection title="Produk Kami" description="Rak pilihan untuk toko dan gudang Anda." />
 
 	<div class="bg-secondary/40">
