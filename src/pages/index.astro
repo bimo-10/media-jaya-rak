@@ -1,17 +1,24 @@
 ---
-
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Hero from "@/components/Hero.astro";
+import PartnersSection from "@/components/PartnersSection.astro";
+import ProblemSection from "@/components/ProblemSection.astro";
+import SolutionSection from "@/components/SolutionSection.astro";
+import ProductsSection from "@/components/ProductsSection.astro";
+import ComparisonSection from "@/components/ComparisonSection.astro";
+import TestimonialsSection from "@/components/TestimonialsSection.astro";
+import SpecialOfferSection from "@/components/SpecialOfferSection.astro";
+import FaqSection from "@/components/FaqSection.astro";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="Home">
+	<Hero />
+	<PartnersSection />
+	<ProblemSection />
+	<SolutionSection />
+	<ProductsSection />
+	<ComparisonSection />
+	<TestimonialsSection />
+	<SpecialOfferSection />
+	<FaqSection />
+</BaseLayout>

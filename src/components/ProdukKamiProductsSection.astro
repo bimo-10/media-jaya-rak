@@ -1,0 +1,78 @@
+---
+import { buttonVariants } from "@/components/ui/button";
+import { WA_LINK } from "@/lib/constants";
+import { getProdukImage } from "@/lib/produkImages";
+
+const produkImage = await getProdukImage(0);
+const produkImage2 = await getProdukImage(1);
+const produkImage3 = await getProdukImage(2);
+const produkImage4 = await getProdukImage(3);
+const produkImage5 = await getProdukImage(4);
+const produkImage6 = await getProdukImage(5);
+const produkImage7 = await getProdukImage(6);
+const produkImage8 = await getProdukImage(7);
+const produkImage9 = await getProdukImage(8);
+const produkImage10 = await getProdukImage(9);
+const produkImage11 = await getProdukImage(10);
+
+interface Props {
+	title?: string;
+	description?: string;
+}
+
+const {
+	title = "Produk Kami",
+	description = "Rak pilihan untuk toko dan gudang Anda.",
+} = Astro.props;
+
+const products = [
+	{ name: "Rak Double", Icon: produkImage },
+	{ name: "Rak Single", Icon: produkImage2 },
+	{ name: "Meja Kasir", Icon: produkImage3 },
+	{ name: "Rak Minimarket", Icon: produkImage4 },
+	{ name: "Rak Heavy Duty", Icon: produkImage5 },
+	{ name: "Rak Rokok", Icon: produkImage6 },
+	{ name: "Trolly Belanja", Icon: produkImage7 },
+	{ name: "Keranjang Mirani", Icon: produkImage8 },
+	{ name: "Rak Buah", Icon: produkImage9 },
+	{ name: "Price Card", Icon: produkImage10 },
+	{ name: "Single Chrome", Icon: produkImage11 },
+];
+---
+
+<section class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
+	<div class="mx-auto max-w-2xl text-center">
+		<h2 class="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+			{title}
+		</h2>
+		<p class="mt-3 text-muted-foreground">{description}</p>
+	</div>
+
+	<div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+		{products.map(({ name, Icon }) => (
+			<div class="group overflow-hidden rounded-xl border border-border/70 bg-white shadow-sm transition-shadow hover:shadow-md">
+				<div class="flex aspect-4/3 items-center justify-center bg-linear-to-br from-orange-50 to-secondary">
+					<img
+						src={Icon.src}
+						alt={Icon.alt}
+						width={Icon.width}
+						height={Icon.height}
+						loading="lazy"
+						class="h-full w-full object-contain"
+					/>
+				</div>
+				<div class="flex items-center justify-between gap-3 p-4">
+					<h3 class="font-semibold text-foreground">{name}</h3>
+					<a
+						href={WA_LINK}
+						target="_blank"
+						rel="noopener noreferrer"
+						class={buttonVariants({ size: "sm", variant: "default" })}
+					>
+						Tanya Harga
+					</a>
+				</div>
+			</div>
+		))}
+	</div>
+</section>

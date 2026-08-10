@@ -1,0 +1,96 @@
+---
+import { SEO } from "astro-seo";
+import "@/styles/global.css";
+import Navbar from "@/components/Navbar.astro";
+import Footer from "@/components/Footer.astro";
+import FloatingContact from "@/components/FloatingContact.astro";
+import {getLogoImage, getFaviconImage} from "@/lib/image";
+
+const { title } = Astro.props;
+
+const logoImage = await getLogoImage();
+const faviconImage = await getFaviconImage();
+---
+
+
+<html lang="id">
+    <head>
+        <SEO
+            title={title}
+            description="Distributor Rak Minimarket, Rak Gondola & Rak Gudang di Indonesia"
+            openGraph={{
+                basic: {
+                    title: "Media Jaya Rak",
+                    type: "website",
+                    image: "/og-image.png",
+                }
+            }}
+            twitter={{ 
+                creator: ""
+             }}
+             extend={{ 
+                link: [{ rel: "icon", type: "image/png", href: faviconImage.src}],
+                meta: [
+                    {
+                        name: "keywords",
+                        content: "Rak Minimarket, Rak Gondola, Rak Gudang, Distributor Rak Minimarket, Distributor Rak Gondola, Distributor Rak Gudang, Rak Minimarket Indonesia, Rak Gondola Indonesia, Rak Gudang Indonesia",
+                    },
+                    {
+                        name: "author",
+                        content: "Media Jaya Rak",
+                    },
+                    {
+                        name: "robots",
+                        content: "index, follow",
+                    },
+                    {
+                        name: "googlebot",
+                        content: "index, follow",
+                    },
+                    {
+                        name: "google-site-verification",
+                        content: "your-google-site-verification-code",
+                    },
+                    {
+                        name: "description",
+                        content: "Distributor Rak Minimarket, Rak Gondola & Rak Gudang di Indonesia",
+                    },
+                    {
+                        name: "og:title",
+                        content: title,
+                    },
+                    {
+                        name: "og:description",
+                        content: "Distributor Rak Minimarket, Rak Gondola & Rak Gudang di Indonesia",
+                    },
+                    {
+                        name: "og:image",
+                        content: "/og-image.png",
+                    },
+                    {
+                        name: "og:url",
+                        content: "https://mediajayarak.com",
+                    },
+                    {
+                        name: "og:type",
+                        content: "website",
+                    },
+                ]
+            }}
+             />
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width" />
+        <meta name="generator" content={Astro.generator} />
+        <link rel="apple-touch-icon" href={faviconImage.src} />
+        <title>{title} | Distributor Rak Minimarket, Rak Gondola & Rak Gudang di Indonesia</title>
+
+    </head>
+    <body class="scroll-smooth bg-white text-foreground">
+        <Navbar />
+        <main class="min-h-screen">
+            <slot />
+        </main>
+        <Footer />
+        <FloatingContact />
+    </body>
+</html>

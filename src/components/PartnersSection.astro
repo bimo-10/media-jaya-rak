@@ -1,0 +1,67 @@
+---
+import { BadgeCheck } from "lucide-react";
+import { Image } from "astro:assets";
+import { getMitraImage } from "@/lib/mitraImages";
+
+const mitraImages = await Promise.all(
+	Array.from({ length: 11 }, (_, i) => i).map(getMitraImage),
+);
+---
+
+<section class="relative overflow-hidden border-y border-border/60 bg-linear-to-b from-secondary/40 via-white to-white py-14">
+	<div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+		<div class="mx-auto max-w-2xl text-center">
+			<span class="inline-flex items-center gap-1.5 rounded-full border border-primary/25 bg-primary/10 px-4 py-1 text-xs font-semibold tracking-wide text-primary">
+				<BadgeCheck class="size-4" />
+				Dipercaya Ribuan Mitra
+			</span>
+			<h2 class="mt-4 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+				Mitra Kami dari Berbagai Bisnis
+			</h2>
+			<p class="mt-3 text-sm text-muted-foreground sm:text-base">
+				Dari minimarket, supermarket, hingga gudang di seluruh Indonesia
+				mempercayakan rak berkualitas kepada kami.
+			</p>
+		</div>
+	</div>
+
+	<div
+		class="group relative mt-10 overflow-hidden"
+		style="mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent)"
+	>
+		<div class="animate-marquee flex w-max items-center gap-6 pr-6">
+			{[...mitraImages, ...mitraImages].map((img) => (
+				<div
+					class="group/card flex h-20 w-56 shrink-0 cursor-pointer items-center justify-center rounded-2xl border border-border/60 bg-white/90 px-6 shadow-sm backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
+				>
+					<Image
+						src={img.src}
+						alt={img.alt}
+						width={img.width}
+						height={img.height}
+						class="h-full w-full object-contain opacity-80 grayscale transition duration-300 group-hover/card:opacity-100 group-hover/card:grayscale-0"
+					/>
+				</div>
+			))}
+		</div>
+	</div>
+</section>
+
+<style>
+	@keyframes marquee {
+		from {
+			transform: translateX(0);
+		}
+		to {
+			transform: translateX(-50%);
+		}
+	}
+
+	.animate-marquee {
+		animation: marquee 35s linear infinite;
+	}
+
+	.group:hover .animate-marquee {
+		animation-play-state: paused;
+	}
+</style>

@@ -1,0 +1,15 @@
+---
+import { MessageCircle } from "lucide-react";
+import { WA_LINK } from "@/lib/constants";
+---
+
+<a
+	href={WA_LINK}
+	target="_blank"
+	rel="noopener noreferrer"
+	aria-label="Hubungi Kami via WhatsApp"
+	class="fixed bottom-5 right-5 z-50 flex items-center gap-2 rounded-full bg-primary px-5 py-3 text-sm font-medium text-primary-foreground shadow-lg shadow-primary/30 transition-all hover:bg-primary/90 hover:shadow-xl focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 animate-in fade-in slide-in-from-bottom-5 duration-500"
+>
+	<MessageCircle class="size-5" />
+	<span>Hubungi Kami</span>
+</a>

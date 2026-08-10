@@ -1,0 +1,82 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import TestimonialsGridSection from "@/components/TestimonialsGridSection.astro";
+import CtaSection from "@/components/CtaSection.astro";
+
+const badges = [
+	"Pelayanan Ramah dan Profesional",
+	"Pengiriman Tepat Waktu",
+	"Harga Terjangkau",
+	"Kualitas Premium",
+	"Pemasangan Cepat & Rapi",
+];
+
+const testimonials = [
+	{
+		name: "Bpk Hidayat",
+		business: "Pelanggan Media Jaya Rak",
+		quote:
+			"Pelayanan Media Jaya Rak sangat memuaskan. Mulai dari konsultasi, pemesanan, hingga pemasangan semuanya berjalan lancar. Rak yang saya pesan sesuai dengan kebutuhan dan mampu menampung banyak produk dengan aman.",
+	},
+	{
+		name: "Bpk Andi",
+		business: "Pelanggan Media Jaya Rak",
+		quote:
+			"Jika Anda mencari rak berkualitas untuk toko, minimarket, atau gudang, Media Jaya Rak adalah pilihan yang tepat. Produk berkualitas, pelayanan memuaskan, dan harga bersaing.",
+	},
+	{
+		name: "Luluk",
+		business: "Tobaku Lumajang",
+		quote:
+			"Pesan untuk 1 toko, ada rak gondola, rak chiki, box wagon, meja kasir custom dan keranjang belanja dengan harga dan promo menarik, free ongkir dan pemasangan juga, puas banget berbelanja disini.",
+	},
+	{
+		name: "Wahyu",
+		business: "Owner Mubarok",
+		quote:
+			"Order ke MJR sudah ke 3 kalinya (rak gondola, meja kasir, rak frezer) barang berkualitas terbaik, respon CS cepat, jadwal pengiriman tepat waktu.",
+	},
+	{
+		name: "Andy",
+		business: "Toko Mainan Manado",
+		quote:
+			"Pesan rak siku untuk display mainan mobil-mobilan sangat kuat & kokoh produknya, rak minimarketnya juga custom sesuai permintaan, trolly-trolly dan perlengkapan toko lainnya sangat membantu saya dalam mendisplay toko mainan saya.",
+	},
+	{
+		name: "Andi Pratama",
+		business: "AndiMart",
+		quote:
+			"Awalnya ragu beli online, takut nggak sesuai gambar. Pas barang datang malah lebih bagus dari foto. Baja galvanis tebal, warna putih bersih, pasangnya gampang. Sekarang lagi siap-siap buka cabang kedua, pasti order lagi disini.",
+	},
+];
+---
+
+<BaseLayout title="Testimoni Pelanggan">
+	<section class="relative overflow-hidden bg-linear-to-b from-orange-50 via-white to-white">
+		<div class="mx-auto max-w-3xl px-4 py-16 text-center sm:px-6 md:py-24 lg:px-8">
+			<h1 class="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl md:text-5xl">
+				Testimoni Pelanggan
+			</h1>
+			<p class="mx-auto mt-5 max-w-2xl text-base text-muted-foreground sm:text-lg">
+				Apa kata mereka setelah berbelanja rak minimarket dan rak gudang di Media
+				Jaya Rak.
+			</p>
+
+			<div class="mt-8 flex flex-wrap justify-center gap-3">
+				{badges.map((badge) => (
+					<span class="rounded-full border border-border bg-white px-4 py-1.5 text-xs font-semibold text-foreground shadow-sm">
+						{badge}
+					</span>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<TestimonialsGridSection title="Dipercaya Oleh Berbagai Bisnis" testimonials={testimonials} />
+
+	<CtaSection
+		title="Ingin Merasakan Pengalaman yang Sama?"
+		description="Konsultasikan kebutuhan rak minimarket atau rak gudang Anda sekarang, gratis tanpa tekanan untuk membeli."
+		ctaLabel="Hubungi Kami"
+	/>
+</BaseLayout>

@@ -1,0 +1,53 @@
+---
+const testimonials = [
+	{
+		name: "Wahyu",
+		business: "Owner Mubarok",
+		quote:
+			"Order ke MJR sudah ke 3 kalinya (rak gondola, meja kasir, rak frezer) barang berkualitas terbaik, respon CS cepat, jadwal pengiriman tepat waktu.",
+	},
+	{
+		name: "Luluk",
+		business: "Tobaku Lumajang",
+		quote:
+			"Pesan untuk 1 toko, ada rak gondola, rak chiki, box wagon, meja kasir custom dan keranjang belanja dengan harga dan promo menarik, free ongkir dan pemasangan juga, puas banget berbelanja disini.",
+	},
+	{
+		name: "Andy",
+		business: "Toko Mainan Manado",
+		quote:
+			"Pesan rak siku untuk display mainan mobil-mobilan sangat kuat & kokoh produknya, rak minimarketnya juga custom sesuai permintaan, trolly-trolly dan perlengkapan toko lainnya sangat membantu saya dalam mendisplay toko mainan saya.",
+	},
+	{
+		name: "Andi Pratama",
+		business: "AndiMart",
+		quote:
+			"Awalnya ragu beli online, takut nggak sesuai gambar. Pas barang datang malah lebih bagus dari foto. Baja galvanis tebal, warna putih bersih, pasangnya gampang. Sekarang lagi siap-siap buka cabang kedua, pasti order lagi disini.",
+	},
+];
+---
+
+<section class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
+	<div class="mx-auto max-w-2xl text-center">
+		<h2 class="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+			Dipercaya Oleh Berbagai Bisnis
+		</h2>
+	</div>
+
+	<div class="mt-10 grid gap-6 sm:grid-cols-2">
+		{testimonials.map((testimonial) => (
+			<div class="rounded-xl border border-border/70 bg-white p-6 shadow-sm">
+				<p class="text-sm text-muted-foreground">&ldquo;{testimonial.quote}&rdquo;</p>
+				<div class="mt-4 flex items-center gap-3">
+					<span class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary">
+						{testimonial.name.charAt(0)}
+					</span>
+					<div>
+						<p class="text-sm font-semibold text-foreground">{testimonial.name}</p>
+						<p class="text-xs text-muted-foreground">{testimonial.business}</p>
+					</div>
+				</div>
+			</div>
+		))}
+	</div>
+</section>

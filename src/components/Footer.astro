@@ -1,0 +1,85 @@
+---
+import {
+	ADDRESS,
+	EMAIL,
+	PHONE_DISPLAY,
+	SOCIAL_LINKS,
+} from "@/lib/constants";
+import { Icon } from "astro-icon/components";
+
+const SOCIAL_ICON_NAMES = {
+	Instagram: "simple-icons:instagram",
+	Facebook: "simple-icons:facebook",
+	TikTok: "simple-icons:tiktok",
+	Shopee: "simple-icons:shopee",
+};
+
+const productLinks = [
+	"Jual Rak Minimarket",
+	"Jual Rak Supermarket",
+	"Jual Rak Swalayan",
+	"Jual Rak Gudang",
+	"Jual Perlengkapan Toko",
+];
+
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-border/70 bg-secondary/40">
+	<div class="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-3 lg:px-8">
+		<div>
+			<div class="flex items-center gap-2">
+				<span class="flex h-9 w-9 items-center justify-center rounded-md bg-primary text-sm font-bold text-primary-foreground">
+					MJR
+				</span>
+				<span class="text-lg font-bold text-foreground">Media Jaya Rak</span>
+			</div>
+			<p class="mt-3 max-w-xs text-sm text-muted-foreground">
+				Penyedia Rak Minimarket, Rak Supermarket dan Rak Gudang Terlengkap dan
+				Berkualitas.
+			</p>
+			<div class="mt-4 flex flex-wrap gap-2">
+				{SOCIAL_LINKS.map((social) => (
+					<a
+						href={social.href}
+						target="_blank"
+						rel="noopener noreferrer"
+						aria-label={social.label}
+						title={social.label}
+						class="flex h-9 w-9 items-center justify-center rounded-full border border-border/80 bg-white text-muted-foreground transition-colors hover:border-primary hover:bg-primary hover:text-primary-foreground"
+					>
+						<Icon
+							name={SOCIAL_ICON_NAMES[social.label]}
+							class="size-4"
+							aria-hidden="true"
+						/>
+					</a>
+				))}
+			</div>
+		</div>
+
+		<div>
+			<h3 class="text-sm font-semibold uppercase tracking-wide text-foreground">Produk</h3>
+			<ul class="mt-4 space-y-2">
+				{productLinks.map((product) => (
+					<li class="text-sm text-muted-foreground">{product}</li>
+				))}
+			</ul>
+		</div>
+
+		<div>
+			<h3 class="text-sm font-semibold uppercase tracking-wide text-foreground">Kontak</h3>
+			<ul class="mt-4 space-y-2 text-sm text-muted-foreground">
+				<li>{PHONE_DISPLAY}</li>
+				<li>{EMAIL}</li>
+				<li>{ADDRESS}</li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="border-t border-border/70 py-6">
+		<p class="text-center text-xs text-muted-foreground">
+			© {year} Bimo Corp. All right reserved.
+		</p>
+	</div>
+</footer>

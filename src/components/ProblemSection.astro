@@ -1,0 +1,45 @@
+---
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+const problems = [
+	{
+		title: "Barang Berantakan",
+		description:
+			"Tumpukan barang tak karuan membuat toko terlihat kumuh dan pelanggan enggan berlama-lama.",
+	},
+	{
+		title: "Sulit Mencari Barang",
+		description:
+			"Waktu terbuang sia-sia hanya untuk mencari satu item tertentu di antara tumpukan barang.",
+	},
+	{
+		title: "Stock Opname Rumit",
+		description:
+			"Kontrol stok menjadi sulit dan sering terjadi selisih akibat penataan yang tidak terstruktur.",
+	},
+];
+---
+
+<section class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
+	<div class="mx-auto max-w-2xl text-center">
+		<h2 class="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+			Apakah Anda Mengalami Ini?
+		</h2>
+		<p class="mt-3 text-muted-foreground">
+			Masalah umum yang sering menghambat efisiensi bisnis ritel dan gudang.
+		</p>
+	</div>
+
+	<div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+		{problems.map((problem) => (
+			<Card className="border-border/70">
+				<CardHeader>
+					<CardTitle className="text-lg">{problem.title}</CardTitle>
+				</CardHeader>
+				<CardContent>
+					<p class="text-sm text-muted-foreground">{problem.description}</p>
+				</CardContent>
+			</Card>
+		))}
+	</div>
+</section>

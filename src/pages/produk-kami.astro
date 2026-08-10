@@ -1,0 +1,112 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import ProdukKamiProductsSection from "@/components/ProdukKamiProductsSection.astro";
+import ProductFeatureSection from "@/components/ProductFeatureSection.astro";
+import CtaSection from "@/components/CtaSection.astro";
+import { buttonVariants } from "@/components/ui/button";
+import { WA_LINK } from "@/lib/constants";
+import { LayoutGrid, Warehouse, Download, ExternalLink } from "lucide-react";
+import catalogPdf from "@/data/KATALOG LOKA RAK_compressed.pdf";
+---
+
+<BaseLayout title="Produk Kami">
+	<section class="relative overflow-hidden bg-linear-to-b from-orange-50 via-white to-white">
+		<div class="mx-auto max-w-3xl px-4 py-16 text-center sm:px-6 md:py-24 lg:px-8">
+			<h1 class="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl md:text-5xl">
+				Rak Gondola &amp; Gudang Berkualitas, Harga Bersahabat, Bisnis Maksimal
+			</h1>
+			<p class="mx-auto mt-5 max-w-2xl text-base text-muted-foreground sm:text-lg">
+				Dari toko kecil hingga gudang besar, kami sediakan rak terbaik yang bikin
+				barang tertata rapi, tampilan toko makin profesional, dan pelanggan betah
+				belanja.
+			</p>
+			<div class="mt-8">
+				<a href={WA_LINK} target="_blank" rel="noopener noreferrer" class={buttonVariants({ size: "lg" })}>
+					Konsultasi & Order via WhatsApp
+				</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
+		<div class="mb-8 text-center">
+			<span class="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-4 py-1 text-xs font-semibold tracking-wide text-primary">
+				Katalog Digital
+			</span>
+			<h2 class="mt-4 text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl">
+				Katalog Lengkap Rak Kami
+			</h2>
+			<p class="mx-auto mt-3 max-w-2xl text-base text-muted-foreground">
+				Jelajahi semua varian rak, meja kasir, dan aksesoris secara detail
+				langsung dari katalog kami di bawah ini.
+			</p>
+			<div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+				<a
+					href={catalogPdf}
+					target="_blank"
+					rel="noopener noreferrer"
+					class={buttonVariants({ size: "lg" })}
+				>
+					<ExternalLink class="size-4" />
+					Buka Katalog PDF
+				</a>
+				<a
+					href={catalogPdf}
+					download="KATALOG LOKA RAK.pdf"
+					class={buttonVariants({ size: "lg", variant: "outline" })}
+				>
+					<Download class="size-4" />
+					Unduh PDF
+				</a>
+			</div>
+		</div>
+
+		<div class="overflow-hidden rounded-2xl border border-primary/20 bg-secondary/40 p-2 shadow-lg sm:p-4">
+			<iframe
+				src={`${catalogPdf}#toolbar=1&navpanes=0`}
+				title="Katalog Produk Media Jaya Rak"
+				class="h-[75vh] w-full rounded-xl border-0 bg-white sm:h-[85vh]"
+				loading="lazy"
+			></iframe>
+		</div>
+	</section>
+
+	<ProdukKamiProductsSection title="Produk Kami" description="Rak pilihan untuk toko dan gudang Anda." />
+
+	<div class="bg-secondary/40">
+		<ProductFeatureSection
+			eyebrow="Rak Gondola"
+			title="Rak Gondola — Tampilan Profesional untuk Toko Modern"
+			description="Rak gondola adalah andalan toko retail, minimarket, apotek, hingga swalayan. Desainnya yang terbuka dari dua sisi bikin pelanggan gampang melihat dan mengambil produk."
+			imageLabel="Rak Gondola"
+			Icon={LayoutGrid}
+			features={[
+				"Finishing powder coating anti gores, warna bersih tahan lama",
+				"Adjustable shelf — bisa diatur ketinggiannya sesuai produk",
+				"Tersedia aksesoris: front fence, price tag holder, divider, end cap",
+				"Bongkar pasang mudah, cocok untuk renovasi toko",
+			]}
+		/>
+
+		<ProductFeatureSection
+			eyebrow="Rak Gudang"
+			title="Rak Gudang Heavy Duty — Kekuatan Maksimal untuk Penyimpanan Berat"
+			description="Untuk gudang, workshop, atau pabrik, Anda butuh rak yang tidak main-main soal kapasitas. Rak gudang kami pakai sistem boltless atau knock-down yang praktis tapi super kuat."
+			imageLabel="Rak Gudang Heavy Duty"
+			Icon={Warehouse}
+			reverse
+			features={[
+				"Lapisan anti karat — aman untuk gudang lembab sekalipun",
+				"Sistem knock-down — rakit sendiri tanpa las, bisa dipindah kapan saja",
+				"Tersedia tambahan decking board kayu atau plat besi",
+				"Garansi konstruksi hingga 5 tahun",
+			]}
+		/>
+	</div>
+
+	<CtaSection
+		title="Punya Pertanyaan atau Langsung Mau Order?"
+		description="Tim kami siap membantu Anda memilih rak terbaik. Tidak perlu ragu, konsultasi gratis, tidak ada tekanan untuk membeli."
+		ctaLabel="Chat via WhatsApp Sekarang"
+	/>
+</BaseLayout>

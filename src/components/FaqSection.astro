@@ -1,0 +1,28 @@
+---
+import { buttonVariants } from "@/components/ui/button";
+import FaqAccordion from "@/components/FaqAccordion";
+import { WA_LINK } from "@/lib/constants";
+---
+
+<section class="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
+	<div class="mx-auto max-w-2xl text-center">
+		<h2 class="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+			Pertanyaan yang Sering Diajukan
+		</h2>
+	</div>
+
+	<div class="mt-10 rounded-xl border border-border/70 bg-white p-6 shadow-sm">
+		<FaqAccordion client:visible />
+	</div>
+
+	<div class="mt-8 text-center">
+		<a
+			href={WA_LINK}
+			target="_blank"
+			rel="noopener noreferrer"
+			class={buttonVariants({ size: "lg" })}
+		>
+			Hubungi Kami
+		</a>
+	</div>
+</section>

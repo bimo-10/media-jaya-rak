@@ -1,0 +1,100 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import ValueGridSection from "@/components/ValueGridSection.astro";
+import CtaSection from "@/components/CtaSection.astro";
+import { buttonVariants } from "@/components/ui/button";
+import { WA_LINK } from "@/lib/constants";
+import { ShieldCheck, Handshake, Scale, Lightbulb, Wallet, Settings2, BadgeCheck, Truck } from "lucide-react";
+
+const values = [
+	{
+		title: "Kualitas di Atas Segalanya",
+		description:
+			"Kami tidak akan kirim rak yang kami sendiri ragu kualitasnya. Setiap material diperiksa, setiap sambungan diuji, setiap finishing dicek ulang.",
+		Icon: ShieldCheck,
+	},
+	{
+		title: "Pelanggan adalah Partner, Bukan Sekadar Pembeli",
+		description:
+			"Kami tidak ingin pelanggan datang sekali lalu hilang. Kami ingin mereka kembali, merekomendasikan kami ke rekan bisnisnya, dan tumbuh bersama kami.",
+		Icon: Handshake,
+	},
+	{
+		title: "Transparansi Tanpa Tawar-Menawar",
+		description:
+			"Kami benci praktek \"harga ngambang\" — kasih harga tinggi ke pelanggan baru, kasih harga rendah ke yang bisa nawar.",
+		Icon: Scale,
+	},
+	{
+		title: "Inovasi Berkelanjutan",
+		description:
+			"Industri retail dan logistik terus berubah. Kami terus belajar, meng-upgrade peralatan, dan mencari material baru yang lebih baik. Kami tidak mau berhenti di \"cukup baik.\"",
+		Icon: Lightbulb,
+	},
+];
+
+const reasons = [
+	{
+		title: "Harga Adil untuk Semua",
+		description:
+			"Karena kami produsen, struktur biaya kami efisien. Anda dapat harga terbaik tanpa mengorbankan kualitas.",
+		Icon: Wallet,
+	},
+	{
+		title: "Custom Tanpa Ribet",
+		description:
+			"Mau ukuran tidak standar? Butuh warna khusus? Ingin tambahan aksesoris tertentu? Semua bisa. Prosesnya simpel: Anda jelaskan kebutuhan, kami buatkan desain, Anda setujui, kami produksi.",
+		Icon: Settings2,
+	},
+	{
+		title: "Garansi yang Benar-Benar Kami Hormati",
+		description:
+			"Garansi bukan sekadar kata-kata di brosur. Jika ada masalah akibat cacat produksi, kami ganti. Tanpa drama, tanpa alasan berbelit.",
+		Icon: BadgeCheck,
+	},
+	{
+		title: "Pengiriman Aman ke Seluruh Indonesia",
+		description:
+			"Packing dengan material kayu dan pelindung. Bekerja sama dengan ekspedisi terpercaya. Sampai tujuan dalam kondisi prima.",
+		Icon: Truck,
+	},
+];
+---
+
+<BaseLayout title="Tentang Kami">
+	<section class="relative overflow-hidden bg-linear-to-b from-orange-50 via-white to-white">
+		<div class="mx-auto max-w-3xl px-4 py-16 text-center sm:px-6 md:py-24 lg:px-8">
+			<h1 class="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl md:text-5xl">
+				Bukan Sekadar Supplier Rak, Tapi Partner Bisnis Anda
+			</h1>
+			<p class="mx-auto mt-5 max-w-2xl text-base text-muted-foreground sm:text-lg">
+				Kami adalah Media Jaya Rak — penyedia rak gondola dan rak gudang berkualitas
+				yang sudah dipercaya lebih dari 1.500 bisnis di seluruh Indonesia. Ini cerita
+				kami, dan kami ingin Anda menjadi bagian dari perjalanan selanjutnya.
+			</p>
+			<div class="mt-8">
+				<a href={WA_LINK} target="_blank" rel="noopener noreferrer" class={buttonVariants({ size: "lg" })}>
+					Konsultasi Via WhatsApp
+				</a>
+			</div>
+		</div>
+	</section>
+
+	<ValueGridSection
+		title="Bukan Sekadar Jual Rak"
+		description="Di Media Jaya Rak, kami percaya bahwa bisnis yang baik dijalankan dengan nilai yang jelas. Bukan sekadar mengejar profit, tapi membangun hubungan jangka panjang."
+		items={values}
+	/>
+
+	<ValueGridSection
+		title="Mengapa Ratusan Bisnis Memilih Kami Setiap Tahunnya?"
+		items={reasons}
+		muted
+	/>
+
+	<CtaSection
+		title="Lebih dari Sekadar Supplier, Kami Ingin Jadi Partner Bisnis Anda"
+		description="Setelah membaca cerita kami, sekarang giliran kami mendengar cerita Anda. Apa kebutuhan rak untuk bisnis Anda? Bagaimana kami bisa membantu?"
+		ctaLabel="Ceritakan Kebutuhan Anda via WhatsApp"
+	/>
+</BaseLayout>
