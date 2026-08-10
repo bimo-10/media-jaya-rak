@@ -5,7 +5,7 @@ import rakMinimarketImage from "@/assets/img/produk/rak-minimarket.webp";
 import rakHeavyDutyImage from "@/assets/img/produk/rak-heavy-duty.jpeg";
 import rakRokokImage from "@/assets/img/produk/rak-rokok.jpeg";
 import trollyBelanjaImage from "@/assets/img/produk/trolly-belanja.jpg";
-import keranjangMiraniImage from "@/assets/img/produk/keranjang-mirani.jpg";
+import keranjangMiraniImage from "@/assets/img/produk/keranjang-mirani.webp";
 import rakBuahImage from "@/assets/img/produk/rak-buah.jpg";
 import priceCardImage from "@/assets/img/produk/price-card.jpeg";
 import singleChromeImage from "@/assets/img/produk/single-chrome.jpeg";
