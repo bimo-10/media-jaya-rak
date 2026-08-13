@@ -1,0 +1,309 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import CtaSection from "@/components/CtaSection.astro";
+import { buttonVariants } from "@/components/ui/button";
+import { WA_LINK } from "@/lib/constants";
+import { getProdukImage } from "@/lib/produkImages";
+import { Image } from "astro:assets";
+import {
+	Warehouse,
+	Settings2,
+	Ruler,
+	Weight,
+	Boxes,
+	ShieldCheck,
+	Wrench,
+	Tags,
+	Layers,
+	Package,
+	CheckCircle2,
+} from "lucide-react";
+
+const heroImage = await getProdukImage(4);
+const detailImage = await getProdukImage(14);
+const galleryImages = await Promise.all([4, 11, 12, 13, 14, 15].map(getProdukImage));
+
+const gallery = [
+	{ name: "Rak Gudang Heavy Duty", image: galleryImages[0] },
+	{ name: "Rak Gudang Medium Duty", image: galleryImages[1] },
+	{ name: "Rak Gudang Light Duty", image: galleryImages[2] },
+	{ name: "Rak Gudang Heavy Duty", image: galleryImages[3] },
+	{ name: "Rak Gudang Custom Kombinasi", image: galleryImages[4] },
+	{ name: "Rak Gudang Siku Serbaguna", image: galleryImages[5] },	
+];
+
+const variants = [
+	{
+		title: "Rak Gudang Light Duty",
+		description:
+			"Rak ringan dan fleksibel untuk penyimpanan barang berukuran sedang. Mudah dirakit, hemat tempat, dan tetap kokoh untuk kebutuhan harian.",
+		Icon: Layers,
+	},
+	{
+		title: "Rak Heavy Duty Boltless",
+		description:
+			"Rak tanpa baut yang kuat dan praktis. Rakitan cepat tanpa las, mudah dipindah, dan mampu menahan beban berat.",
+		Icon: Warehouse,
+	},
+	{
+		title: "Rak Gudang Knock-Down",
+		description:
+			"Sistem knock-down super kokoh untuk gudang, workshop, maupun pabrik. Fleksibel disusun sesuai layout ruangan.",
+		Icon: Settings2,
+	},
+	{
+		title: "Rak Pallet / Load",
+		description:
+			"Rak penyimpanan pallet untuk skala besar dengan kapasitas tinggi. Cocok untuk distribusi, logistik, dan industri.",
+		Icon: Boxes,
+	},
+];
+
+const specs = [
+	{ label: "Bahan Utama", value: "Besi hollow tebal + lapisan anti karat", Icon: Settings2 },
+	{ label: "Kapasitas Beban", value: "Hingga ratusan kg per susun", Icon: Weight },
+	{ label: "Dimensi Standar", value: "Custom sesuai luas dan tinggi gudang", Icon: Ruler },
+	{ label: "Sistem Rakit", value: "Boltless / knock-down tanpa las", Icon: Layers },
+	{ label: "Tahan Karat", value: "Aman untuk gudang lembab sekalipun", Icon: ShieldCheck },
+	{ label: "Decking Board", value: "Pilihan kayu atau plat besi", Icon: Package },
+	{ label: "Pemasangan", value: "Mudah rakit sendiri, bisa dipindah", Icon: Wrench },
+	{ label: "Harga", value: "Bersahabat, negosiasi untuk pembelian banyak", Icon: Tags },
+];
+
+const accessories = [
+	"Decking board kayu / plat besi",
+	"Lembaran triplek / papan tambahan",
+	"Pengunci u-frame / baut pengaman",
+	"Label lokasi penyimpanan",
+	"Foot plat / kaki penstabil",
+	"Penyesuaian custom ukuran dan warna",
+];
+---
+
+<BaseLayout title="Rak Gudang">
+	<section class="relative overflow-hidden bg-linear-to-b from-orange-50 via-white to-white">
+		<div class="mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-24 lg:px-8">
+			<nav aria-label="Breadcrumb" class="mb-6 text-sm text-muted-foreground">
+				<ol class="flex flex-wrap items-center gap-1.5">
+					<li>
+						<a href="/" class="transition-colors hover:text-primary">Home</a>
+					</li>
+					<li aria-hidden="true">/</li>
+					<li>
+						<a href="/produk-kami" class="transition-colors hover:text-primary">Produk Kami</a>
+					</li>
+					<li aria-hidden="true">/</li>
+					<li class="font-medium text-foreground">Rak Gudang</li>
+				</ol>
+			</nav>
+
+			<div class="grid items-center gap-10 lg:grid-cols-2">
+				<div>
+					<span class="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-4 py-1 text-xs font-semibold tracking-wide text-primary">
+						RAK GUDANG &amp; INDUSTRI
+					</span>
+					<h1 class="mt-5 text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl md:text-5xl">
+						Rak Gudang Heavy Duty
+					</h1>
+					<p class="mt-5 max-w-xl text-base text-muted-foreground sm:text-lg">
+						Untuk gudang, workshop, atau pabrik, Anda butuh rak yang tidak main-main
+						soal kapasitas. Rak gudang kami memakai sistem boltless atau knock-down
+						yang praktis tapi super kuat.
+					</p>
+					<div class="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center lg:justify-start">
+						<a
+							href={WA_LINK}
+							target="_blank"
+							rel="noopener noreferrer"
+							class={buttonVariants({ size: "lg" })}
+						>
+							Konsultasi & Order via WhatsApp
+						</a>
+						<a href="#spesifikasi" class={buttonVariants({ size: "lg", variant: "outline" })}>
+							Lihat Spesifikasi
+						</a>
+					</div>
+					<div class="mt-8 flex flex-wrap justify-center gap-3 lg:justify-start">
+						<span class="rounded-full border border-border bg-white px-4 py-1.5 text-xs font-semibold text-foreground shadow-sm">
+							Heavy Duty
+						</span>
+						<span class="rounded-full border border-border bg-white px-4 py-1.5 text-xs font-semibold text-foreground shadow-sm">
+							Boltless / Knock-Down
+						</span>
+						<span class="rounded-full border border-border bg-white px-4 py-1.5 text-xs font-semibold text-foreground shadow-sm">
+							Garansi Konstruksi 5 Tahun
+						</span>
+					</div>
+				</div>
+
+				<div class="flex justify-center">
+					<div class="overflow-hidden rounded-3xl border border-border/60 bg-white shadow-xl">
+						<Image
+							src={heroImage.src}
+							alt={heroImage.alt}
+							width={heroImage.width}
+							height={heroImage.height}
+							class="h-full w-full object-contain"
+						/>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section id="spesifikasi" class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
+		<div class="mx-auto max-w-2xl text-center">
+			<span class="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-4 py-1 text-xs font-semibold tracking-wide text-primary">
+				VARIANT RAK GUDANG
+			</span>
+			<h2 class="mt-4 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+				Pilih Tipe yang Sesuai Kebutuhan Gudang Anda
+			</h2>
+			<p class="mt-3 text-muted-foreground">
+				Setiap tipe bisa disesuaikan ukuran, tinggi, dan kapasitas beban.
+			</p>
+		</div>
+
+		<div class="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+			{variants.map(({ title, description, Icon }) => (
+				<div class="rounded-xl border border-border/70 bg-white p-6 shadow-sm">
+					<span class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+						<Icon className="size-5" strokeWidth={1.75} />
+					</span>
+					<h3 class="mt-4 font-semibold text-foreground">{title}</h3>
+					<p class="mt-2 text-sm text-muted-foreground">{description}</p>
+				</div>
+			))}
+		</div>
+	</section>
+
+	<section class="bg-primary/5 py-16">
+		<div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+			<div class="mx-auto max-w-2xl text-center">
+				<span class="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-4 py-1 text-xs font-semibold tracking-wide text-primary">
+					GALERI PRODUK
+				</span>
+				<h2 class="mt-4 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+					Gambar Produk Rak Gudang
+				</h2>
+				<p class="mt-3 text-muted-foreground">
+					Rak gudang heavy duty yang siap kami kirim untuk kebutuhan penyimpanan Anda.
+				</p>
+			</div>
+
+			<div class="mt-10 grid gap-6 sm:grid-cols-3">
+				{gallery.map(({ name, image }) => (
+					<figure class="group overflow-hidden rounded-xl border border-border/70 bg-white shadow-sm transition-shadow hover:shadow-md">
+						<div class="flex aspect-4/3 items-center justify-center bg-linear-to-br from-orange-50 to-secondary">
+							<Image
+								src={image.src}
+								alt={image.alt}
+								width={image.width}
+								height={image.height}
+								loading="lazy"
+								class="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
+							/>
+						</div>
+						<figcaption class="border-t border-border/70 p-4 text-center text-sm font-semibold text-foreground">
+							{name}
+						</figcaption>
+					</figure>
+				))}
+			</div>
+
+			<div class="mt-10 text-center">
+				<a
+					href={WA_LINK}
+					target="_blank"
+					rel="noopener noreferrer"
+					class={buttonVariants({ size: "lg" })}
+				>
+					Minta Foto & Harga Lengkap
+				</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="bg-secondary/40 py-16">
+		<div class="mx-auto grid max-w-6xl items-center gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
+			<div class="order-2 lg:order-1">
+				<span class="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-4 py-1 text-xs font-semibold tracking-wide text-primary">
+					SPESIFIKASI
+				</span>
+				<h2 class="mt-4 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+					Kekuatan Maksimal untuk Penyimpanan Berat
+				</h2>
+				<p class="mt-3 text-muted-foreground">
+					Dibuat dari material tebal dengan konstruksi yang diperkuat, rak gudang
+					kami dirancang menahan beban besar tanpa melengkung dan awet bertahun-tahun.
+				</p>
+
+				<ul class="mt-6 grid gap-3 sm:grid-cols-2">
+					{specs.map(({ label, value, Icon }) => (
+						<li class="flex items-start gap-3 rounded-xl border border-border/70 bg-white p-4 shadow-sm">
+							<span class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+								<Icon className="size-4" strokeWidth={1.75} />
+							</span>
+							<div>
+								<p class="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{label}</p>
+								<p class="mt-0.5 text-sm font-medium text-foreground">{value}</p>
+							</div>
+						</li>
+					))}
+				</ul>
+			</div>
+
+			<div class="order-1 flex justify-center lg:order-2">
+				<div class="overflow-hidden rounded-3xl border border-border/60 bg-white shadow-xl">
+					<Image
+						src={detailImage.src}
+						alt={detailImage.alt}
+						width={detailImage.width}
+						height={detailImage.height}
+						class="h-full w-full object-contain"
+					/>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
+		<div class="mx-auto max-w-2xl text-center">
+			<span class="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-4 py-1 text-xs font-semibold tracking-wide text-primary">
+				AKSESORIS
+			</span>
+			<h2 class="mt-4 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+				Lengkapi dengan Aksesoris Pendukung
+			</h2>
+			<p class="mt-3 text-muted-foreground">
+				Tambahkan aksesoris untuk penyimpanan yang lebih rapi, aman, dan efisien.
+			</p>
+		</div>
+
+		<div class="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+			{accessories.map((accessory) => (
+				<div class="flex items-start gap-3 rounded-xl border border-border/70 bg-white p-4 shadow-sm">
+					<CheckCircle2 className="mt-0.5 size-5 shrink-0 text-primary" />
+					<span class="text-sm font-medium text-foreground">{accessory}</span>
+				</div>
+			))}
+		</div>
+
+		<div class="mt-10 text-center">
+			<a
+				href={WA_LINK}
+				target="_blank"
+				rel="noopener noreferrer"
+				class={buttonVariants({ size: "lg" })}
+			>
+				Tanya Ketersediaan Aksesoris
+			</a>
+		</div>
+	</section>
+
+	<CtaSection
+		title="Butuh Rak Gudang yang Kokoh dan Tahan Lama?"
+		description="Konsultasikan kebutuhan rak gudang Anda bersama tim kami. Gratis, tanpa tekanan, dan langsung dapat penawaran terbaik."
+		ctaLabel="Chat via WhatsApp Sekarang"
+	/>
+</BaseLayout>

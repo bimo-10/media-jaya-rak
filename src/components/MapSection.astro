@@ -1,0 +1,51 @@
+---
+import { ADDRESS } from "@/lib/constants";
+import { Icon } from "astro-icon/components";
+
+const MAP_QUERY = encodeURIComponent(ADDRESS);
+const MAP_SRC = `https://www.google.com/maps?q=${MAP_QUERY}&z=15&output=embed`;
+const MAP_LINK = `https://www.google.com/maps/search/?api=1&query=${MAP_QUERY}`;
+---
+
+<section class="bg-secondary/40 py-16">
+	<div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+		<div class="mx-auto max-w-2xl text-center">
+			<h2 class="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+				Lokasi Kami
+			</h2>
+			<p class="mt-3 text-muted-foreground">
+				Kunjungi toko kami atau buka lokasi di Google Maps.
+			</p>
+		</div>
+
+		<div class="mt-10 grid gap-6 md:grid-cols-[1fr_280px]">
+			<div class="overflow-hidden rounded-xl border border-border/70 bg-white shadow-sm">
+				<iframe
+					title="Lokasi Media Jaya Rak"
+					src={MAP_SRC}
+					class="h-[400px] w-full border-0"
+					loading="lazy"
+					referrerpolicy="no-referrer-when-downgrade"
+					allowfullscreen
+				></iframe>
+			</div>
+
+			<aside class="flex flex-col justify-center rounded-xl border border-border/70 bg-white p-6 shadow-sm">
+				<div class="flex items-center gap-3">
+					<Icon name="mdi:map-marker" class="size-8 text-primary" aria-hidden="true" />
+					<h3 class="text-base font-semibold text-foreground">Alamat</h3>
+				</div>
+				<p class="mt-3 text-sm leading-relaxed text-muted-foreground">{ADDRESS}</p>
+				<a
+					href={MAP_LINK}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="mt-6 inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+				>
+					<Icon name="mdi:navigation" class="size-4" aria-hidden="true" />
+					Buka di Google Maps
+				</a>
+			</aside>
+		</div>
+	</div>
+</section>

@@ -11,9 +11,23 @@ const WA_MESSAGE =
 
 export const WA_LINK = `https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(WA_MESSAGE)}`;
 
-export const NAV_LINKS = [
+export type NavLink = {
+  label: string;
+  href: string;
+  children?: { label: string; href: string }[];
+};
+
+export const NAV_LINKS: NavLink[] = [
   { label: "Home", href: "/" },
-  { label: "Produk Kami", href: "/produk-kami" },
+  {
+    label: "Produk Kami",
+    href: "/produk-kami",
+    children: [
+      { label: "Rak Gondola", href: "/produk-kami/rak-gondola" },
+      { label: "Rak Gudang", href: "/produk-kami/rak-gudang" },
+      { label: "Produk Lainnya", href: "/produk-kami/produk-lainnya" },
+    ],
+  },
   // { label: "Katalog Produk", href: "/katalog-produk" },
   { label: "Tentang Kami", href: "/tentang-kami" },
   { label: "Testimoni", href: "/testimoni-pelanggan" },

@@ -2,6 +2,7 @@
 import type { ComponentType } from "react";
 import { getProdukImage } from "@/lib/produkImages";
 import { Image } from "astro:assets";
+import { buttonVariants } from "@/components/ui/button";
 
 const produkImages = await Promise.all([4, 1].map(getProdukImage));
 
@@ -13,9 +14,21 @@ interface Props {
 	imageLabel: string;
 	Icon: ComponentType<{ className?: string; strokeWidth?: number }>;
 	reverse?: boolean;
+	href?: string;
+	ctaLabel?: string;
 }
 
-const { eyebrow, title, description, features, imageLabel, Icon, reverse = false } = Astro.props;
+const {
+	eyebrow,
+	title,
+	description,
+	features,
+	imageLabel,
+	Icon,
+	reverse = false,
+	href,
+	ctaLabel = "Lihat Detail",
+} = Astro.props;
 ---
 
 <section class="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
@@ -57,6 +70,17 @@ const { eyebrow, title, description, features, imageLabel, Icon, reverse = false
 					</li>
 				))}
 			</ul>
+
+			{href && (
+				<div class="mt-8">
+					<a
+						href={href}
+						class={buttonVariants({ size: "lg" })}
+					>
+						{ctaLabel}
+					</a>
+				</div>
+			)}
 		</div>
 	</div>
 </section>

@@ -10,21 +10,57 @@ const currentPath = Astro.url.pathname;
 <header class="sticky top-0 z-50 w-full border-b border-border/60 bg-white/90 backdrop-blur ">
 	<nav class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
 		<a href="/" class="flex items-center gap-2 shrink-0">
-			<Image src={logo} alt="Media Jaya Rak Logo" width={800} height={800} class="h-24 w-24 rounded-full object-contain" />
+			<Image src={logo} alt="Media Jaya Rak Logo" width={800} height={800} class="h-16 w-16 object-contain" />
 		</a>
 
 		<ul class="hidden items-center gap-8 md:flex">
 			{NAV_LINKS.map((link) => (
-				<li>
-					<a
-						href={link.href}
-						class:list={[
-							"text-sm font-medium text-muted-foreground transition-colors hover:text-primary",
-							{ "text-primary": currentPath === link.href },
-						]}
-					>
-						{link.label}
-					</a>
+				<li class="relative">
+					{link.children ? (
+						<div class="nav-dropdown group">
+							<button
+								type="button"
+								aria-haspopup="true"
+								class:list={[
+									"flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-primary",
+									{ "text-primary": currentPath.startsWith(link.href) },
+								]}
+							>
+								{link.label}
+								<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="transition-transform group-hover:rotate-180"><path d="m6 9 6 6 6-6"/></svg>
+							</button>
+							<ul class="invisible absolute left-0 top-full z-50 mt-2 w-56 rounded-xl border border-border/70 bg-white p-2 opacity-0 shadow-lg transition-all duration-150 group-hover:visible group-hover:opacity-100">
+								<li>
+									<a href={link.href} class="block rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-primary">
+										Semua Produk
+									</a>
+								</li>
+								{link.children.map((child) => (
+									<li>
+										<a
+											href={child.href}
+											class:list={[
+												"block rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-primary",
+												{ "text-primary": currentPath === child.href },
+											]}
+										>
+											{child.label}
+										</a>
+									</li>
+								))}
+							</ul>
+						</div>
+					) : (
+						<a
+							href={link.href}
+							class:list={[
+								"text-sm font-medium text-muted-foreground transition-colors hover:text-primary",
+								{ "text-primary": currentPath === link.href },
+							]}
+						>
+							{link.label}
+						</a>
+					)}
 				</li>
 			))}
 		</ul>
@@ -56,9 +92,45 @@ const currentPath = Astro.url.pathname;
 		<ul class="flex flex-col gap-1 px-4 py-3">
 			{NAV_LINKS.map((link) => (
 				<li>
-					<a href={link.href} class="block rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-accent hover:text-primary">
-						{link.label}
-					</a>
+					{link.children ? (
+						<div class="nav-dropdown-mobile">
+							<div class="flex items-center justify-between">
+								<a
+									href={link.href}
+									class="flex-1 block rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-accent hover:text-primary"
+								>
+									{link.label}
+								</a>
+								<button
+									type="button"
+									aria-expanded="false"
+									aria-label={`Buka submenu ${link.label}`}
+									class="nav-dropdown-mobile-toggle flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-primary"
+								>
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+								</button>
+							</div>
+							<ul class="nav-dropdown-mobile-menu hidden space-y-1 pb-1 pl-4">
+								{link.children.map((child) => (
+									<li>
+										<a
+											href={child.href}
+											class:list={[
+												"block rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-accent hover:text-primary",
+												{ "text-primary": currentPath === child.href },
+											]}
+										>
+											{child.label}
+										</a>
+									</li>
+								))}
+							</ul>
+						</div>
+					) : (
+						<a href={link.href} class="block rounded-md px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-accent hover:text-primary">
+							{link.label}
+						</a>
+					)}
 				</li>
 			))}
 			<li class="pt-2">
@@ -86,5 +158,14 @@ const currentPath = Astro.url.pathname;
 		toggle.setAttribute("aria-expanded", String(isOpen));
 		iconOpen?.classList.toggle("hidden", isOpen);
 		iconClose?.classList.toggle("hidden", !isOpen);
+	});
+
+	document.querySelectorAll<HTMLButtonElement>(".nav-dropdown-mobile-toggle").forEach((button) => {
+		button.addEventListener("click", () => {
+			const wrapper = button.closest(".nav-dropdown-mobile");
+			const submenu = wrapper?.querySelector<HTMLElement>(".nav-dropdown-mobile-menu");
+			const isOpen = submenu?.classList.toggle("hidden") === false;
+			button.setAttribute("aria-expanded", String(isOpen));
+		});
 	});
 </script>

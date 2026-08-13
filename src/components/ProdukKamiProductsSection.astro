@@ -26,17 +26,17 @@ const {
 } = Astro.props;
 
 const products = [
-	{ name: "Rak Double", Icon: produkImage },
-	{ name: "Rak Single", Icon: produkImage2 },
-	{ name: "Meja Kasir", Icon: produkImage3 },
-	{ name: "Rak Minimarket", Icon: produkImage4 },
-	{ name: "Rak Heavy Duty", Icon: produkImage5 },
-	{ name: "Rak Rokok", Icon: produkImage6 },
-	{ name: "Trolly Belanja", Icon: produkImage7 },
-	{ name: "Keranjang Mirani", Icon: produkImage8 },
-	{ name: "Rak Buah", Icon: produkImage9 },
-	{ name: "Price Card", Icon: produkImage10 },
-	{ name: "Single Chrome", Icon: produkImage11 },
+	{ name: "Rak Double", Icon: produkImage, href: "/produk-kami/produk-lainnya" },
+	{ name: "Rak Single", Icon: produkImage2, href: "/produk-kami/produk-lainnya" },
+	{ name: "Meja Kasir", Icon: produkImage3, href: "/produk-kami/produk-lainnya" },
+	{ name: "Rak Minimarket", Icon: produkImage4, href: "/produk-kami/rak-gondola" },
+	{ name: "Rak Heavy Duty", Icon: produkImage5, href: "/produk-kami/rak-gudang" },
+	{ name: "Rak Rokok", Icon: produkImage6, href: "/produk-kami/produk-lainnya" },
+	{ name: "Trolly Belanja", Icon: produkImage7, href: "/produk-kami/produk-lainnya" },
+	{ name: "Keranjang Mirani", Icon: produkImage8, href: "/produk-kami/produk-lainnya" },
+	{ name: "Rak Buah", Icon: produkImage9, href: "/produk-kami/produk-lainnya" },
+	{ name: "Price Card", Icon: produkImage10, href: "/produk-kami/produk-lainnya" },
+	{ name: "Single Chrome", Icon: produkImage11, href: "/produk-kami/produk-lainnya" },
 ];
 ---
 
@@ -49,27 +49,31 @@ const products = [
 	</div>
 
 	<div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-		{products.map(({ name, Icon }) => (
+		{products.map(({ name, Icon, href }) => (
 			<div class="group overflow-hidden rounded-xl border border-border/70 bg-white shadow-sm transition-shadow hover:shadow-md">
-				<div class="flex aspect-4/3 items-center justify-center bg-linear-to-br from-orange-50 to-secondary">
-					<img
-						src={Icon.src}
-						alt={Icon.alt}
-						width={Icon.width}
-						height={Icon.height}
-						loading="lazy"
-						class="h-full w-full object-contain"
-					/>
-				</div>
-				<div class="flex items-center justify-between gap-3 p-4">
-					<h3 class="font-semibold text-foreground">{name}</h3>
+				<a href={href ?? "#"} class="block">
+					<div class="flex aspect-4/3 items-center justify-center bg-linear-to-br from-orange-50 to-secondary">
+						<img
+							src={Icon.src}
+							alt={Icon.alt}
+							width={Icon.width}
+							height={Icon.height}
+							loading="lazy"
+							class="h-full w-full object-contain"
+						/>
+					</div>
+					<div class="flex items-center justify-between gap-3 p-4">
+						<h3 class="font-semibold text-foreground">{name}</h3>
+					</div>
+				</a>
+				<div class="px-4 pb-4">
 					<a
-						href={WA_LINK}
-						target="_blank"
-						rel="noopener noreferrer"
-						class={buttonVariants({ size: "sm", variant: "default" })}
+						href={href ?? WA_LINK}
+						target={href ? undefined : "_blank"}
+						rel={href ? undefined : "noopener noreferrer"}
+						class={buttonVariants({ size: "sm", variant: "default", className: "w-full" })}
 					>
-						Tanya Harga
+						{href ? "Lihat Detail" : "Tanya Harga"}
 					</a>
 				</div>
 			</div>
