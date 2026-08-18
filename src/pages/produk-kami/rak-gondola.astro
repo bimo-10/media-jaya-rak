@@ -23,7 +23,7 @@ import {
 console.log("Gambar Rak Gondola:", await Promise.all([...Array(21).keys()].map((i) => getProdukImage(i).then((img) => ({ index: i, alt: img.alt })))));
 const heroImage = await getProdukImage(3);
 const detailImage = await getProdukImage(0);
-const galleryImages = await Promise.all([0, 1, 3, 20, 21, 16, 17, 19].map(getProdukImage));
+const galleryImages = await Promise.all([0, 1, 3, 20, 21, 16, 17, 19,18].map(getProdukImage));
 console.log("Gallery Images:", galleryImages.map((img, index) => ({ index, alt: img.alt })));
 
 const gallery = [
@@ -31,7 +31,7 @@ const gallery = [
 	{ name: "Rak Meja Kasir Alfa Standar", image: galleryImages[4] },
 	{ name: "Rak Backpanel Perforated", image: galleryImages[5] },
 	{ name: "Rak Backpanel Polos", image: galleryImages[6] },
-	{ name: "Rak Corner", image: galleryImages[1] },
+	{ name: "Rak Corner", image: galleryImages[8] },
 	{ name: "Rak Gondola Double Sided", image: galleryImages[0] },
 	{ name: "Rak End", image: galleryImages[7] },
 	{ name: "Rak Gondola Single Sided", image: galleryImages[1] },
