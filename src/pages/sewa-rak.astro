@@ -1,0 +1,251 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import CtaSection from "@/components/CtaSection.astro";
+import { buttonVariants } from "@/components/ui/button";
+import { WA_LINK } from "@/lib/constants";
+import { getProdukImage } from "@/lib/produkImages";
+import { Image } from "astro:assets";
+import { Clock, CreditCard, Settings2, Truck, ShieldCheck, PackageCheck } from "lucide-react";
+
+const rentalImages = await Promise.all([0, 1, 3, 4, 11, 12, 14, 15, 18, 19].map(getProdukImage));
+
+const rentalProducts = [
+	{ name: "Rak Gondola Double", image: rentalImages[0] },
+	{ name: "Rak Gondola Single", image: rentalImages[1] },
+	{ name: "Rak Minimarket", image: rentalImages[2] },
+	{ name: "Rak Heavy Duty", image: rentalImages[3] },
+	{ name: "Rak Medium Duty", image: rentalImages[4] },
+	{ name: "Rak Light Duty", image: rentalImages[5] },
+	{ name: "Rak Custom Kombinasi", image: rentalImages[6] },
+	{ name: "Rak Siku Serbaguna", image: rentalImages[7] },
+	{ name: "Rak Corner", image: rentalImages[8] },
+	{ name: "Rak End", image: rentalImages[9] },
+];
+
+const benefits = [
+	{
+		title: "Biaya Ringan, Tanpa Modal Besar",
+		description:
+			"Sewa rak memungkinkan Anda memulai atau memperluas bisnis tanpa harus mengeluarkan modal besar untuk pembelian rak secara tunai.",
+		Icon: CreditCard,
+	},
+	{
+		title: "Fleksibel & Bisa Disesuaikan",
+		description:
+			"Kebutuhan rak bisa berubah seiring perkembangan bisnis. Dengan sewa, Anda bisa menambah, mengurangi, atau mengganti jenis rak sesuai kebutuhan.",
+		Icon: Settings2,
+	},
+	{
+		title: "Pengiriman & Pemasangan Gratis",
+		description:
+			"Tim kami akan mengantarkan rak ke lokasi Anda dan memasangnya secara profesional tanpa biaya tambahan.",
+		Icon: Truck,
+	},
+	{
+		title: "Perawatan & Penggantian Terjamin",
+		description:
+			"Jika terjadi kerusakan atau masalah teknis, tim teknis kami siap melakukan perawatan atau penggantian rak agar operasional Anda tetap lancar.",
+		Icon: ShieldCheck,
+	},
+	{
+		title: "Cocok untuk Berbagai Kebutuhan",
+		description:
+			"Ideal untuk pop-up store, event, pameran, toko musiman, atau percobaan konsep bisnis baru sebelum berkomitmen membeli.",
+		Icon: PackageCheck,
+	},
+	{
+		title: "Durasi Sewa Fleksibel",
+		description:
+			"Pilih durasi sewa harian, mingguan, bulanan, atau tahunan sesuai kebutuhan bisnis Anda. Perpanjangan kapan saja.",
+		Icon: Clock,
+	},
+];
+
+const steps = [
+	{
+		step: "01",
+		title: "Hubungi Kami",
+		description: "Ceritakan kebutuhan rak Anda — jenis, ukuran, jumlah, dan lokasi pengiriman.",
+	},
+	{
+		step: "02",
+		title: "Konsultasi & Penawaran",
+		description: "Tim kami akan memberikan rekomendasi rak terbaik beserta penawaran harga yang transparan.",
+	},
+	{
+		step: "03",
+		title: "Pengiriman & Pemasangan",
+		description: "Setelah kesepakatan, rak dikirim dan dipasang langsung di lokasi Anda oleh tim profesional kami.",
+	},
+	{
+		step: "04",
+		title: "Operasional & Dukungan",
+		description: "Gunakan rak dengan tenang. Tim kami siap membantu jika ada masalah selama masa sewa.",
+	},
+];
+
+const faqItems = [
+	{
+		question: "Berapa lama minimal masa sewa?",
+		answer: "Masa sewa minimal kami adalah 1 bulan. Namun untuk kebutuhan event atau pameran, kami juga menyediakan opsi sewa harian dan mingguan.",
+	},
+	{
+		question: "Apakah ada biaya pengiriman dan pemasangan?",
+		answer: "Pengiriman dan pemasangan sudah termasuk dalam paket sewa tanpa biaya tambahan untuk area Jawa Timur. Untuk luar Jawa Timur, silakan konsultasi dengan tim kami.",
+	},
+	{
+		question: "Bagaimana jika rak mengalami kerusakan?",
+		answer: "Jika kerusakan terjadi bukan karena kesalahan penggunaan, kami akan melakukan perbaikan atau penggantian gratis. Untuk kerusakan akibat kelalaian, akan dikenakan biaya sesuai tingkat kerusakan.",
+	},
+	{
+		question: "Bisakah saya membeli rak setelah masa sewa?",
+		answer: "Tentu bisa! Kami menyediakan opsi pembelian untuk pelanggan sewa dengan harga khusus. Silakan diskusikan dengan tim kami.",
+	},
+	{
+		question: "Jenis rak apa saja yang tersedia untuk disewa?",
+		answer: "Kami menyediakan berbagai jenis rak termasuk rak gondola minimarket, rak gudang, rak toko, dan rak custom sesuai kebutuhan bisnis Anda.",
+	},
+];
+---
+
+<BaseLayout title="Sewa Rak">
+	<section class="relative overflow-hidden bg-linear-to-b from-orange-50 via-white to-white">
+		<div class="mx-auto max-w-3xl px-4 py-16 text-center sm:px-6 md:py-24 lg:px-8">
+			<span class="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-4 py-1 text-xs font-semibold tracking-wide text-primary">
+				LAYANAN SEWA RAK
+			</span>
+			<h1 class="mt-5 text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl md:text-5xl">
+				Sewa Rak untuk Kebutuhan Bisnis Anda
+			</h1>
+			<p class="mx-auto mt-5 max-w-2xl text-base text-muted-foreground sm:text-lg">
+				Solusi praktis dan hemat biaya untuk mendapatkan rak berkualitas tanpa harus membeli.
+				Cocok untuk toko baru, pop-up store, event, pameran, atau percobaan konsep bisnis.
+			</p>
+			<div class="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+				<a href={WA_LINK} target="_blank" rel="noopener noreferrer" class={buttonVariants({ size: "lg" })}>
+					Konsultasi Via WhatsApp
+				</a>
+				<a href="#langkah-sewa" class={buttonVariants({ size: "lg", variant: "outline" })}>
+					Lihat Cara Sewa
+				</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="py-16">
+		<div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+			<div class="text-center">
+				<h2 class="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+					Keuntungan Sewa Rak di Media Jaya Rak
+				</h2>
+				<p class="mx-auto mt-3 max-w-2xl text-muted-foreground">
+					Kami memberikan layanan sewa rak yang fleksibel, terjangkau, dan profesional untuk mendukung pertumbuhan bisnis Anda.
+				</p>
+			</div>
+			<div class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+				{benefits.map(({ title, description, Icon }) => (
+					<div class="rounded-xl border bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
+						<div class="mb-4 inline-flex rounded-lg bg-primary/10 p-3">
+							<Icon class="h-6 w-6 text-primary" />
+						</div>
+						<h3 class="text-lg font-bold text-foreground">{title}</h3>
+						<p class="mt-2 text-sm text-muted-foreground">{description}</p>
+					</div>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<section class="bg-primary/5 py-16">
+		<div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+			<div class="text-center">
+				<span class="inline-flex items-center rounded-full border border-primary/30 bg-primary/10 px-4 py-1 text-xs font-semibold tracking-wide text-primary">
+					PILIHAN RAK
+				</span>
+				<h2 class="mt-4 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+					Jenis Rak yang Tersedia untuk Disewa
+				</h2>
+				<p class="mx-auto mt-3 max-w-2xl text-muted-foreground">
+					Pilih jenis rak yang sesuai dengan kebutuhan bisnis Anda. Semua tersedia dalam kondisi prima dan siap dikirim.
+				</p>
+			</div>
+
+			<div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+				{rentalProducts.map(({ name, image }) => (
+					<figure class="group overflow-hidden rounded-xl border border-border/70 bg-white shadow-sm transition-shadow hover:shadow-md">
+						<div class="flex aspect-square items-center justify-center bg-linear-to-br from-orange-50 to-secondary p-4">
+							<Image
+								src={image.src}
+								alt={image.alt}
+								width={image.width}
+								height={image.height}
+								loading="lazy"
+								class="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
+							/>
+						</div>
+						<figcaption class="border-t border-border/70 p-3 text-center">
+							<h3 class="text-sm font-semibold text-foreground">{name}</h3>
+						</figcaption>
+					</figure>
+				))}
+			</div>
+
+			<div class="mt-10 text-center">
+				<a href={WA_LINK} target="_blank" rel="noopener noreferrer" class={buttonVariants({ size: "lg" })}>
+					Tanya Ketersediaan & Harga
+				</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="bg-primary/5 py-16" id="langkah-sewa">
+		<div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+			<div class="text-center">
+				<h2 class="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+					Cara Sewa Rak
+				</h2>
+				<p class="mx-auto mt-3 max-w-2xl text-muted-foreground">
+					Proses sewa rak kami cepat dan mudah. Ikuti langkah-langkah berikut:
+				</p>
+			</div>
+			<div class="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+				{steps.map(({ step, title, description }) => (
+					<div class="text-center">
+						<div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-xl font-extrabold text-white">
+							{step}
+						</div>
+						<h3 class="text-lg font-bold text-foreground">{title}</h3>
+						<p class="mt-2 text-sm text-muted-foreground">{description}</p>
+					</div>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<section class="py-16">
+		<div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+			<div class="text-center">
+				<h2 class="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+					Pertanyaan Umum
+				</h2>
+				<p class="mt-3 text-muted-foreground">
+					Berikut adalah pertanyaan yang sering diajukan mengenai layanan sewa rak kami.
+				</p>
+			</div>
+			<div class="mt-10 space-y-4">
+				{faqItems.map(({ question, answer }) => (
+					<div class="rounded-xl border bg-white p-6 shadow-sm">
+						<h3 class="text-base font-bold text-foreground">{question}</h3>
+						<p class="mt-2 text-sm leading-relaxed text-muted-foreground">{answer}</p>
+					</div>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<CtaSection
+		title="Siap Sewa Rak untuk Bisnis Anda?"
+		description="Hubungi kami sekarang untuk konsultasi gratis dan dapatkan penawaran terbaik sesuai kebutuhan bisnis Anda."
+		ctaLabel="Chat via WhatsApp Sekarang"
+	/>
+</BaseLayout>

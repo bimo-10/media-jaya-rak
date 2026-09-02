@@ -9,6 +9,7 @@ import mitraImage8 from "@/assets/img/mitra/IMG-20260617-WA0017.jpg";
 import mitraImage9 from "@/assets/img/mitra/IMG-20260617-WA0018.jpg";
 import mitraImage10 from "@/assets/img/mitra/IMG-20260617-WA0019.jpg";
 import mitraImage11 from "@/assets/img/mitra/IMG-20260617-WA0020.jpg";
+import mitraImage12 from "@/assets/img/mitra/toserba-sunan-drajat.jpeg";
 import { getImage } from "astro:assets";
 
 const MITRA_IMAGE_WIDTH = 300;
@@ -58,6 +59,10 @@ export const mitraImages = [
   {
     src: mitraImage11,
     alt: "Mitra Image 11",
+  },
+  {
+    src: mitraImage12,
+    alt: "Mitra Image 12",
   },
 ];
 

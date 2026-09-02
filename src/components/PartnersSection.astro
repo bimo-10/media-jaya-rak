@@ -4,7 +4,7 @@ import { Image } from "astro:assets";
 import { getMitraImage } from "@/lib/mitraImages";
 
 const mitraImages = await Promise.all(
-	Array.from({ length: 11 }, (_, i) => i).map(getMitraImage),
+	Array.from({ length: 12 }, (_, i) => i).map(getMitraImage),
 );
 ---
 

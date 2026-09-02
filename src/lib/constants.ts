@@ -28,6 +28,7 @@ export const NAV_LINKS: NavLink[] = [
       { label: "Produk Lainnya", href: "/produk-kami/produk-lainnya" },
     ],
   },
+  { label: "Sewa Rak", href: "/sewa-rak" },
   // { label: "Katalog Produk", href: "/katalog-produk" },
   { label: "Tentang Kami", href: "/tentang-kami" },
   { label: "Testimoni", href: "/testimoni-pelanggan" },
