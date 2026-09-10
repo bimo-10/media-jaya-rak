@@ -7,18 +7,16 @@ import { getProdukImage } from "@/lib/produkImages";
 import { Image } from "astro:assets";
 import { Clock, CreditCard, Settings2, Truck, ShieldCheck, PackageCheck } from "lucide-react";
 
+import testimoni1 from "@/assets/img/testimoni/testimoni 1.jpeg";
+import testimoni2 from "@/assets/img/testimoni/testimoni 2.jpeg";
+import testimoni3 from "@/assets/img/testimoni/testimoni 3.jpeg";
+import testimoni4 from "@/assets/img/testimoni/testimoni 4.jpeg";
+
 const rentalImages = await Promise.all([0, 1, 3, 4, 11, 12, 14, 15, 18, 19].map(getProdukImage));
 
 const rentalProducts = [
-	{ name: "Rak Gondola Double", image: rentalImages[0] },
 	{ name: "Rak Gondola Single", image: rentalImages[1] },
-	{ name: "Rak Minimarket", image: rentalImages[2] },
-	{ name: "Rak Heavy Duty", image: rentalImages[3] },
-	{ name: "Rak Medium Duty", image: rentalImages[4] },
-	{ name: "Rak Light Duty", image: rentalImages[5] },
-	{ name: "Rak Custom Kombinasi", image: rentalImages[6] },
-	{ name: "Rak Siku Serbaguna", image: rentalImages[7] },
-	{ name: "Rak Corner", image: rentalImages[8] },
+	{ name: "Rak Gondola Double", image: rentalImages[0] },
 	{ name: "Rak End", image: rentalImages[9] },
 ];
 
@@ -170,7 +168,7 @@ const faqItems = [
 				</p>
 			</div>
 
-			<div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+			<div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
 				{rentalProducts.map(({ name, image }) => (
 					<figure class="group overflow-hidden rounded-xl border border-border/70 bg-white shadow-sm transition-shadow hover:shadow-md">
 						<div class="flex aspect-square items-center justify-center bg-linear-to-br from-orange-50 to-secondary p-4">
@@ -216,6 +214,31 @@ const faqItems = [
 						</div>
 						<h3 class="text-lg font-bold text-foreground">{title}</h3>
 						<p class="mt-2 text-sm text-muted-foreground">{description}</p>
+					</div>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<section class="py-16">
+		<div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+			<div class="text-center">
+				<h2 class="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+					Testimoni Pelanggan
+				</h2>
+				<p class="mx-auto mt-3 max-w-2xl text-muted-foreground">
+					Lihat apa kata pelanggan kami yang telah menggunakan layanan sewa rak Media Jaya Rak.
+				</p>
+			</div>
+			<div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+				{[testimoni1, testimoni2, testimoni3, testimoni4].map((img, i) => (
+					<div class="overflow-hidden rounded-xl border border-border/70 bg-white shadow-sm transition-shadow hover:shadow-md">
+						<Image
+							src={img}
+							alt={`Testimoni pelanggan ${i + 1}`}
+							loading="lazy"
+							class="h-full w-full object-cover"
+						/>
 					</div>
 				))}
 			</div>
