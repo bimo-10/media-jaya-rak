@@ -80,6 +80,12 @@ function mobileIconClass(active = false) {
   );
 }
 
+function mobileBarClass() {
+  return cn(
+    "inline-flex size-11 shrink-0 items-center justify-center rounded-xl text-white/90 transition-colors active:bg-white/15 disabled:cursor-not-allowed disabled:opacity-30",
+  );
+}
+
 const PdfPage = forwardRef<HTMLDivElement, { src: string; alt: string }>(
   ({ src, alt }, ref) => (
     <div
@@ -143,6 +149,187 @@ function BigPrevNextButton({
   );
 }
 
+function MobilePdfReader({ pages }: { pages: RenderedPage[] }) {
+  const readerRef = useRef<HTMLDivElement | null>(null);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const [active, setActive] = useState(0);
+  const [zoom, setZoom] = useState(1);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  const pageCount = pages.length;
+
+  const scrollToPage = (index: number, smooth = true) => {
+    const root = scrollRef.current;
+    if (!root) return;
+    const idx = Math.min(Math.max(index, 0), pageCount - 1);
+    const el = root.querySelector<HTMLElement>(`[data-page="${idx}"]`);
+    if (!el) return;
+    const top =
+      el.getBoundingClientRect().top -
+      root.getBoundingClientRect().top +
+      root.scrollTop -
+      6;
+    root.scrollTo({ top: Math.max(top, 0), behavior: smooth ? "smooth" : "auto" });
+  };
+
+  useEffect(() => {
+    const root = scrollRef.current;
+    if (!root) return;
+    const items = Array.from(root.querySelectorAll<HTMLElement>("[data-page]"));
+    const observer = new IntersectionObserver(
+      (entries) => {
+        let best: { ratio: number; el: HTMLElement } | null = null;
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          if (!best || entry.intersectionRatio > best.ratio) {
+            best = { ratio: entry.intersectionRatio, el: entry.target as HTMLElement };
+          }
+        }
+        if (!best) return;
+        const idx = Number(best.el.dataset.page);
+        setActive(idx);
+        const url = `${window.location.pathname}${window.location.search}#page/${idx + 1}`;
+        window.history.replaceState(null, "", url);
+      },
+      { root, threshold: [0.1, 0.3, 0.6, 0.85] },
+    );
+    items.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [pages]);
+
+  useEffect(() => {
+    const page = parseHashPage();
+    if (page !== null && page > 1) {
+      const t = window.setTimeout(() => scrollToPage(page - 1, false), 120);
+      return () => window.clearTimeout(t);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pages]);
+
+  useEffect(() => {
+    const onChange = () => setIsFullscreen(Boolean(document.fullscreenElement));
+    document.addEventListener("fullscreenchange", onChange);
+    return () => document.removeEventListener("fullscreenchange", onChange);
+  }, []);
+
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (target && ["INPUT", "TEXTAREA"].includes(target.tagName)) return;
+      if (e.key === "ArrowLeft") scrollToPage(active - 1);
+      if (e.key === "ArrowRight") scrollToPage(active + 1);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  });
+
+  const activeIdx = Math.min(active, pageCount - 1);
+
+  const zoomIn = () => setZoom((z) => Math.min(z + 0.25, 2));
+  const zoomOut = () => setZoom((z) => Math.max(z - 0.25, 1));
+
+  const toggleFullscreen = () => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch(() => {});
+    } else {
+      readerRef.current?.requestFullscreen?.().catch(() => {});
+    }
+  };
+
+  return (
+    <div
+      ref={readerRef}
+      className={cn(
+        "relative flex flex-col bg-neutral-950",
+        isFullscreen ? "fixed inset-0 z-50 overflow-hidden" : "h-[calc(100dvh-4rem)]",
+      )}
+    >
+      <div
+        ref={scrollRef}
+        className="flex-1 overflow-auto overscroll-contain"
+      >
+        <div className="w-full">
+          {pages.map((page, i) => (
+            <img
+              key={page.src}
+              data-page={i}
+              src={page.src}
+              alt={`Halaman ${i + 1}`}
+              draggable={false}
+              className="mx-auto block w-full select-none"
+              style={{ width: `${zoom * 100}%` }}
+            />
+          ))}
+        </div>
+      </div>
+
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex justify-center px-4 pb-4">
+        <div className="pointer-events-auto flex max-w-full items-center gap-1 rounded-2xl border border-white/15 bg-neutral-900/85 px-2 py-1.5 shadow-lg backdrop-blur">
+          <button
+            type="button"
+            onClick={() => scrollToPage(activeIdx - 1)}
+            disabled={activeIdx === 0}
+            aria-label="Halaman sebelumnya"
+            className={mobileBarClass()}
+          >
+            <ChevronLeft className="size-5" />
+          </button>
+          <span className="min-w-[4.5rem] px-2 text-center text-sm font-bold tabular-nums text-white">
+            {activeIdx + 1}
+            <span className="text-white/50"> / {pageCount}</span>
+          </span>
+          <button
+            type="button"
+            onClick={() => scrollToPage(activeIdx + 1)}
+            disabled={activeIdx === pageCount - 1}
+            aria-label="Halaman berikutnya"
+            className={mobileBarClass()}
+          >
+            <ChevronRight className="size-5" />
+          </button>
+
+          <span className="mx-1 h-6 w-px bg-white/20" aria-hidden="true" />
+
+          <button
+            type="button"
+            onClick={zoomOut}
+            aria-label="Perkecil"
+            className={mobileBarClass()}
+          >
+            <ZoomOut className="size-5" />
+          </button>
+          <span className="w-11 px-1 text-center text-xs font-medium text-white/80">
+            {Math.round(zoom * 100)}%
+          </span>
+          <button
+            type="button"
+            onClick={zoomIn}
+            aria-label="Perbesar"
+            className={mobileBarClass()}
+          >
+            <ZoomIn className="size-5" />
+          </button>
+
+          <span className="mx-1 h-6 w-px bg-white/20" aria-hidden="true" />
+
+          <button
+            type="button"
+            onClick={toggleFullscreen}
+            aria-label="Mode layar penuh"
+            className={mobileBarClass()}
+          >
+            {isFullscreen ? (
+              <Minimize className="size-5" />
+            ) : (
+              <Maximize className="size-5" />
+            )}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function ProductCatalogFlipbook() {
   const bookRef = useRef<{ pageFlip(): PageFlipInstance } | null>(null);
   const outerRef = useRef<HTMLDivElement | null>(null);
@@ -157,7 +344,11 @@ export default function ProductCatalogFlipbook() {
   const [showToc, setShowToc] = useState(false);
   const [copied, setCopied] = useState(false);
   const [baseHeight, setBaseHeight] = useState<number | null>(null);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(max-width: 767px)").matches,
+  );
 
   const pageCount = pages.length;
   const bookWidth = pages[0]?.width ?? 353;
@@ -275,6 +466,7 @@ export default function ProductCatalogFlipbook() {
 
   useEffect(() => {
     const onArrowKey = (e: KeyboardEvent) => {
+      if (isMobile) return;
       const target = e.target as HTMLElement | null;
       if (target && ["INPUT", "TEXTAREA"].includes(target.tagName)) return;
       if (e.key === "ArrowLeft") goPrev();
@@ -347,6 +539,8 @@ export default function ProductCatalogFlipbook() {
 
   if (error) return <ErrorState message={error} />;
   if (pageCount === 0) return <LoadingState />;
+
+  if (isMobile) return <MobilePdfReader pages={pages} />;
 
   return (
     <div

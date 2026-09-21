@@ -6,7 +6,7 @@ import Footer from "@/components/Footer.astro";
 import FloatingContact from "@/components/FloatingContact.astro";
 import {getLogoImage, getFaviconImage} from "@/lib/image";
 
-const { title } = Astro.props;
+const { title, hideFloatingContact = false } = Astro.props;
 
 const logoImage = await getLogoImage();
 const faviconImage = await getFaviconImage();
@@ -91,6 +91,6 @@ const faviconImage = await getFaviconImage();
             <slot />
         </main>
         <Footer />
-        <FloatingContact />
+        {!hideFloatingContact && <FloatingContact />}
     </body>
 </html>
