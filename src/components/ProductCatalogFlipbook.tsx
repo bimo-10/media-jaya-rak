@@ -149,32 +149,62 @@ function BigPrevNextButton({
   );
 }
 
-function MobileFlipbook({ pages }: { pages: RenderedPage[] }) {
-  const outerRef = useRef<HTMLDivElement | null>(null);
-  const bookRef = useRef<{ pageFlip(): PageFlipInstance } | null>(null);
-  const scaledRef = useRef<HTMLDivElement | null>(null);
-
-  const [currentPage, setCurrentPage] = useState(0);
+function MobilePdfReader({ pages }: { pages: RenderedPage[] }) {
+  const readerRef = useRef<HTMLDivElement | null>(null);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const [active, setActive] = useState(0);
   const [zoom, setZoom] = useState(1);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [baseHeight, setBaseHeight] = useState<number | null>(null);
 
   const pageCount = pages.length;
-  const bookWidth = pages[0]?.width ?? 353;
-  const bookHeight = pages[0]?.height ?? BOOK_HEIGHT;
+
+  const scrollToPage = (index: number, smooth = true) => {
+    const root = scrollRef.current;
+    if (!root) return;
+    const idx = Math.min(Math.max(index, 0), pageCount - 1);
+    const el = root.querySelector<HTMLElement>(`[data-page="${idx}"]`);
+    if (!el) return;
+    const top =
+      el.getBoundingClientRect().top -
+      root.getBoundingClientRect().top +
+      root.scrollTop -
+      6;
+    root.scrollTo({ top: Math.max(top, 0), behavior: smooth ? "smooth" : "auto" });
+  };
 
   useEffect(() => {
-    const el = scaledRef.current;
-    if (!el) return;
-
-    const observer = new ResizeObserver(() => {
-      setBaseHeight(el.offsetHeight);
-    });
-    observer.observe(el);
-    setBaseHeight(el.offsetHeight);
-
+    const root = scrollRef.current;
+    if (!root) return;
+    const items = Array.from(root.querySelectorAll<HTMLElement>("[data-page]"));
+    const observer = new IntersectionObserver(
+      (entries) => {
+        let best: { ratio: number; el: HTMLElement } | null = null;
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          if (!best || entry.intersectionRatio > best.ratio) {
+            best = { ratio: entry.intersectionRatio, el: entry.target as HTMLElement };
+          }
+        }
+        if (!best) return;
+        const idx = Number(best.el.dataset.page);
+        setActive(idx);
+        const url = `${window.location.pathname}${window.location.search}#page/${idx + 1}`;
+        window.history.replaceState(null, "", url);
+      },
+      { root, threshold: [0.1, 0.3, 0.6, 0.85] },
+    );
+    items.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
-  }, [pages.length]);
+  }, [pages]);
+
+  useEffect(() => {
+    const page = parseHashPage();
+    if (page !== null && page > 1) {
+      const t = window.setTimeout(() => scrollToPage(page - 1, false), 120);
+      return () => window.clearTimeout(t);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pages]);
 
   useEffect(() => {
     const onChange = () => setIsFullscreen(Boolean(document.fullscreenElement));
@@ -183,122 +213,53 @@ function MobileFlipbook({ pages }: { pages: RenderedPage[] }) {
   }, []);
 
   useEffect(() => {
-    const syncFromHash = () => {
-      const page = parseHashPage();
-      const flip = bookRef.current?.pageFlip();
-      if (!flip || page === null) return;
-      const target = Math.min(Math.max(page - 1, 0), pageCount - 1);
-      if (target !== flip.getCurrentPageIndex()) flip.flip(target);
-    };
-
-    window.addEventListener("hashchange", syncFromHash);
-    return () => window.removeEventListener("hashchange", syncFromHash);
-  }, [pageCount]);
-
-  useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement | null;
       if (target && ["INPUT", "TEXTAREA"].includes(target.tagName)) return;
-      if (e.key === "ArrowLeft") goPrev();
-      if (e.key === "ArrowRight") goNext();
+      if (e.key === "ArrowLeft") scrollToPage(active - 1);
+      if (e.key === "ArrowRight") scrollToPage(active + 1);
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   });
 
-  const goToPage = (pageIndex: number) => {
-    const flip = bookRef.current?.pageFlip();
-    if (!flip) return;
-    const target = Math.min(Math.max(pageIndex, 0), pageCount - 1);
-    flip.flip(target);
-  };
+  const activeIdx = Math.min(active, pageCount - 1);
 
-  const goPrev = () => bookRef.current?.pageFlip().flipPrev();
-  const goNext = () => bookRef.current?.pageFlip().flipNext();
-
-  const zoomIn = () => setZoom((z) => Math.min(z + ZOOM_STEP, MAX_ZOOM));
-  const zoomOut = () => setZoom((z) => Math.max(z - ZOOM_STEP, MIN_ZOOM));
+  const zoomIn = () => setZoom((z) => Math.min(z + 0.25, 2));
+  const zoomOut = () => setZoom((z) => Math.max(z - 0.25, 1));
 
   const toggleFullscreen = () => {
     if (document.fullscreenElement) {
       document.exitFullscreen().catch(() => {});
     } else {
-      outerRef.current?.requestFullscreen?.().catch(() => {});
+      readerRef.current?.requestFullscreen?.().catch(() => {});
     }
   };
 
-  useEffect(() => {
-    const el = outerRef.current;
-    if (!el) return;
-    const onFirstTap = () => {
-      if (!document.fullscreenElement) {
-        el.requestFullscreen?.().catch(() => {});
-      }
-      el.removeEventListener("touchstart", onFirstTap);
-    };
-    el.addEventListener("touchstart", onFirstTap, { passive: true });
-    return () => el.removeEventListener("touchstart", onFirstTap);
-  }, []);
-
-  const currentLabel = currentPage + 1;
-
   return (
     <div
-      ref={outerRef}
+      ref={readerRef}
       className={cn(
         "relative flex flex-col bg-neutral-950",
-        isFullscreen
-          ? "fixed inset-0 z-50 overflow-hidden"
-          : "h-[calc(100dvh-4rem)]",
+        isFullscreen ? "fixed inset-0 z-50 overflow-hidden" : "h-[calc(100dvh-4rem)]",
       )}
     >
-      <div className="min-h-0 flex-1 overflow-auto">
-        <div className="flex min-h-full items-center justify-center px-3 py-3">
-          <div
-            className="transition-[height] duration-200"
-            style={{ height: baseHeight ? baseHeight * zoom : undefined }}
-          >
-            <div
-              ref={scaledRef}
-              style={{
-                transform: `scale(${zoom})`,
-                transformOrigin: "top center",
-              }}
-            >
-              <HTMLFlipBook
-                ref={bookRef}
-                width={bookWidth}
-                height={bookHeight}
-                size="stretch"
-                minWidth={280}
-                maxWidth={520}
-                minHeight={400}
-                maxHeight={720}
-                showCover
-                drawShadow
-                flippingTime={700}
-                mobileScrollSupport
-                onInit={() => {
-                  const page = parseHashPage();
-                  if (page !== null && page !== 1) goToPage(page - 1);
-                }}
-                onFlip={(e) => {
-                  const index = e.data;
-                  setCurrentPage(index);
-                  const url = `${window.location.pathname}${window.location.search}#page/${index + 1}`;
-                  window.history.replaceState(null, "", url);
-                }}
-              >
-                {pages.map((page, i) => (
-                  <PdfPage
-                    key={page.src}
-                    src={page.src}
-                    alt={`Halaman ${i + 1}`}
-                  />
-                ))}
-              </HTMLFlipBook>
-            </div>
-          </div>
+      <div
+        ref={scrollRef}
+        className="flex-1 overflow-auto overscroll-contain"
+      >
+        <div className="w-full">
+          {pages.map((page, i) => (
+            <img
+              key={page.src}
+              data-page={i}
+              src={page.src}
+              alt={`Halaman ${i + 1}`}
+              draggable={false}
+              className="mx-auto block w-full select-none"
+              style={{ width: `${zoom * 100}%` }}
+            />
+          ))}
         </div>
       </div>
 
@@ -306,21 +267,21 @@ function MobileFlipbook({ pages }: { pages: RenderedPage[] }) {
         <div className="pointer-events-auto flex max-w-full items-center gap-1 rounded-2xl border border-white/15 bg-neutral-900/85 px-2 py-1.5 shadow-lg backdrop-blur">
           <button
             type="button"
-            onClick={goPrev}
-            disabled={currentPage === 0}
+            onClick={() => scrollToPage(activeIdx - 1)}
+            disabled={activeIdx === 0}
             aria-label="Halaman sebelumnya"
             className={mobileBarClass()}
           >
             <ChevronLeft className="size-5" />
           </button>
           <span className="min-w-[4.5rem] px-2 text-center text-sm font-bold tabular-nums text-white">
-            {currentLabel}
+            {activeIdx + 1}
             <span className="text-white/50"> / {pageCount}</span>
           </span>
           <button
             type="button"
-            onClick={goNext}
-            disabled={currentPage === pageCount - 1}
+            onClick={() => scrollToPage(activeIdx + 1)}
+            disabled={activeIdx === pageCount - 1}
             aria-label="Halaman berikutnya"
             className={mobileBarClass()}
           >
@@ -579,7 +540,7 @@ export default function ProductCatalogFlipbook() {
   if (error) return <ErrorState message={error} />;
   if (pageCount === 0) return <LoadingState />;
 
-  if (isMobile) return <MobileFlipbook pages={pages} />;
+  if (isMobile) return <MobilePdfReader pages={pages} />;
 
   return (
     <div
