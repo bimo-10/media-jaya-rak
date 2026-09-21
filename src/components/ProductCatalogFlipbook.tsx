@@ -1,4 +1,11 @@
-import { forwardRef, useEffect, useMemo, useRef, useState } from "react";
+import {
+  forwardRef,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import HTMLFlipBook from "react-pageflip";
 import type { PageFlipInstance } from "react-pageflip";
 import {
@@ -64,6 +71,15 @@ function controlButtonClass(active = false) {
   );
 }
 
+function mobileIconClass(active = false) {
+  return cn(
+    "inline-flex size-11 shrink-0 items-center justify-center rounded-xl border transition-colors",
+    active
+      ? "border-primary bg-primary text-primary-foreground shadow-sm"
+      : "border-border bg-white text-muted-foreground active:bg-primary/10",
+  );
+}
+
 const PdfPage = forwardRef<HTMLDivElement, { src: string; alt: string }>(
   ({ src, alt }, ref) => (
     <div
@@ -103,6 +119,30 @@ function ErrorState({ message }: { message: string }) {
   );
 }
 
+function BigPrevNextButton({
+  onClick,
+  disabled,
+  ariaLabel,
+  children,
+}: {
+  onClick: () => void;
+  disabled: boolean;
+  ariaLabel: string;
+  children: ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      aria-label={ariaLabel}
+      className="flex h-12 flex-1 items-center justify-center gap-2 rounded-xl border border-border bg-white text-sm font-semibold text-foreground transition-colors active:bg-primary/10 disabled:cursor-not-allowed disabled:opacity-40"
+    >
+      {children}
+    </button>
+  );
+}
+
 export default function ProductCatalogFlipbook() {
   const bookRef = useRef<{ pageFlip(): PageFlipInstance } | null>(null);
   const outerRef = useRef<HTMLDivElement | null>(null);
@@ -117,6 +157,7 @@ export default function ProductCatalogFlipbook() {
   const [showToc, setShowToc] = useState(false);
   const [copied, setCopied] = useState(false);
   const [baseHeight, setBaseHeight] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   const pageCount = pages.length;
   const bookWidth = pages[0]?.width ?? 353;
@@ -130,6 +171,14 @@ export default function ProductCatalogFlipbook() {
       })),
     [pageCount],
   );
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    const onChange = () => setIsMobile(mq.matches);
+    onChange();
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -224,6 +273,17 @@ export default function ProductCatalogFlipbook() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
 
+  useEffect(() => {
+    const onArrowKey = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (target && ["INPUT", "TEXTAREA"].includes(target.tagName)) return;
+      if (e.key === "ArrowLeft") goPrev();
+      if (e.key === "ArrowRight") goNext();
+    };
+    window.addEventListener("keydown", onArrowKey);
+    return () => window.removeEventListener("keydown", onArrowKey);
+  });
+
   const updateHash = (pageIndex: number) => {
     const url = `${window.location.pathname}${window.location.search}#page/${pageIndex + 1}`;
     window.history.replaceState(null, "", url);
@@ -294,12 +354,12 @@ export default function ProductCatalogFlipbook() {
       className={cn(
         "flex flex-col items-center",
         isFullscreen &&
-          "fixed inset-0 z-50 w-full justify-center overflow-auto bg-neutral-900 p-6",
+          "fixed inset-0 z-50 w-full justify-center overflow-auto bg-neutral-900 p-2 sm:p-6",
       )}
     >
       <div
         className={cn(
-          "w-full max-w-6xl rounded-2xl border border-primary/20 bg-white/70 p-3 shadow-lg backdrop-blur-sm sm:p-5",
+          "w-full max-w-6xl rounded-2xl border border-primary/20 bg-white/70 p-2 shadow-lg backdrop-blur-sm sm:p-5",
           isFullscreen && "max-w-7xl bg-neutral-800/40",
         )}
       >
@@ -351,7 +411,8 @@ export default function ProductCatalogFlipbook() {
           </div>
         </div>
 
-        <div className="mt-3 flex flex-col gap-3">
+        {/* Kontrol desktop */}
+        <div className="mt-3 hidden flex-col gap-3 sm:flex">
           <div className="flex items-center gap-2 overflow-x-auto pb-1">
             <button
               type="button"
@@ -469,80 +530,186 @@ export default function ProductCatalogFlipbook() {
               </button>
             </div>
           </div>
+        </div>
 
-          {showToc && (
-            <div className="grid gap-1 rounded-xl border border-primary/20 bg-white p-3 sm:grid-cols-2">
-              {toc.map((item) => {
-                const active = item.page - 1 === currentPage;
-                return (
-                  <button
-                    key={item.page}
-                    type="button"
-                    onClick={() => {
-                      goToPage(item.page - 1);
-                      setShowToc(false);
-                    }}
-                    className={cn(
-                      "flex items-center justify-between gap-2 rounded-lg px-3 py-2 text-left text-sm transition-colors",
-                      active
-                        ? "bg-primary font-semibold text-primary-foreground"
-                        : "text-foreground hover:bg-primary/10 hover:text-primary",
-                    )}
-                  >
-                    <span className="truncate">{item.title}</span>
-                    <span
-                      className={cn(
-                        "shrink-0 text-xs font-bold",
-                        active ? "text-primary-foreground" : "text-primary",
-                      )}
-                    >
-                      {item.page}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          )}
+        {/* Kontrol mobile */}
+        <div className="mt-3 flex flex-col gap-3 sm:hidden">
+          <div className="flex items-center gap-3">
+            <span className="whitespace-nowrap text-sm font-semibold text-foreground">
+              <span className="text-lg font-extrabold tabular-nums text-primary">
+                {currentLabel}
+              </span>
+              <span className="text-xs text-muted-foreground">
+                {" "}
+                / {pageCount}
+              </span>
+            </span>
+            <input
+              type="range"
+              min={1}
+              max={pageCount}
+              value={currentLabel}
+              onChange={(e) => goToPage(Number(e.target.value) - 1)}
+              aria-label="Geser halaman"
+              className="h-2 flex-1 cursor-pointer appearance-none rounded-full bg-primary/30 accent-primary"
+            />
+          </div>
 
-          {showShare && (
-            <div className="flex flex-wrap items-center gap-2 rounded-xl border border-primary/20 bg-white p-3">
-              {shareLinks.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:border-primary/40 hover:text-primary"
-                >
-                  <span
-                    className="size-2.5 rounded-full"
-                    style={{ backgroundColor: link.color }}
-                    aria-hidden="true"
-                  />
-                  {link.label}
-                  <ExternalLink className="size-3 text-muted-foreground" />
-                </a>
-              ))}
+          <div className="flex items-center gap-2">
+            <BigPrevNextButton
+              onClick={goPrev}
+              disabled={currentPage === 0}
+              ariaLabel="Halaman sebelumnya"
+            >
+              <ChevronLeft className="size-5" />
+              Sebelumnya
+            </BigPrevNextButton>
+            <BigPrevNextButton
+              onClick={goNext}
+              disabled={currentPage === pageCount - 1}
+              ariaLabel="Halaman berikutnya"
+            >
+              Berikutnya
+              <ChevronRight className="size-5" />
+            </BigPrevNextButton>
+          </div>
+
+          <div className="flex items-center gap-2 overflow-x-auto pb-1">
+            <button
+              type="button"
+              onClick={() => setShowToc((v) => !v)}
+              aria-label="Daftar isi"
+              title="Daftar isi"
+              className={mobileIconClass(showToc)}
+            >
+              <List className="size-5" />
+            </button>
+
+            <button
+              type="button"
+              onClick={zoomOut}
+              aria-label="Perkecil"
+              title="Perkecil"
+              className={mobileIconClass()}
+            >
+              <ZoomOut className="size-5" />
+            </button>
+            <span className="w-12 text-center text-xs font-medium text-muted-foreground">
+              {Math.round(zoom * 100)}%
+            </span>
+            <button
+              type="button"
+              onClick={zoomIn}
+              aria-label="Perbesar"
+              title="Perbesar"
+              className={mobileIconClass()}
+            >
+              <ZoomIn className="size-5" />
+            </button>
+
+            <div className="ml-auto flex items-center gap-2">
               <button
                 type="button"
-                onClick={copyLink}
-                className="inline-flex items-center gap-2 rounded-lg border border-primary bg-primary/10 px-3 py-1.5 text-xs font-semibold text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
+                onClick={() => setShowShare((v) => !v)}
+                aria-label="Bagikan katalog"
+                title="Bagikan katalog"
+                className={mobileIconClass(showShare)}
               >
-                {copied ? (
-                  <Check className="size-3" />
+                <Share2 className="size-5" />
+              </button>
+              <button
+                type="button"
+                onClick={toggleFullscreen}
+                aria-label="Mode layar penuh"
+                title="Mode layar penuh"
+                className={mobileIconClass(isFullscreen)}
+              >
+                {isFullscreen ? (
+                  <Minimize className="size-5" />
                 ) : (
-                  <Copy className="size-3" />
+                  <Maximize className="size-5" />
                 )}
-                {copied ? "Tersalin!" : "Salin Tautan"}
               </button>
             </div>
-          )}
-
-          <p className="text-center text-xs text-muted-foreground">
-            Klik ujung halaman, gunakan tombol navigasi, atau tautan #page/N
-            untuk membuka halaman tertentu.
-          </p>
+          </div>
         </div>
+
+        {(showToc || showShare) && (
+          <div className="mt-3 flex flex-col gap-3">
+            {showToc && (
+              <div className="grid gap-1 rounded-xl border border-primary/20 bg-white p-3 sm:grid-cols-2">
+                {toc.map((item) => {
+                  const active = item.page - 1 === currentPage;
+                  return (
+                    <button
+                      key={item.page}
+                      type="button"
+                      onClick={() => {
+                        goToPage(item.page - 1);
+                        setShowToc(false);
+                      }}
+                      className={cn(
+                        "flex items-center justify-between gap-2 rounded-lg px-3 py-2.5 text-left text-sm transition-colors sm:py-2",
+                        active
+                          ? "bg-primary font-semibold text-primary-foreground"
+                          : "text-foreground hover:bg-primary/10 hover:text-primary",
+                      )}
+                    >
+                      <span className="truncate">{item.title}</span>
+                      <span
+                        className={cn(
+                          "shrink-0 text-xs font-bold",
+                          active ? "text-primary-foreground" : "text-primary",
+                        )}
+                      >
+                        {item.page}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+
+            {showShare && (
+              <div className="flex flex-wrap items-center gap-2 rounded-xl border border-primary/20 bg-white p-3">
+                {shareLinks.map((link) => (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 rounded-lg border border-border px-3 py-2 text-xs font-medium text-foreground transition-colors hover:border-primary/40 hover:text-primary"
+                  >
+                    <span
+                      className="size-2.5 rounded-full"
+                      style={{ backgroundColor: link.color }}
+                      aria-hidden="true"
+                    />
+                    {link.label}
+                    <ExternalLink className="size-3 text-muted-foreground" />
+                  </a>
+                ))}
+                <button
+                  type="button"
+                  onClick={copyLink}
+                  className="inline-flex items-center gap-2 rounded-lg border border-primary bg-primary/10 px-3 py-2 text-xs font-semibold text-primary transition-colors hover:bg-primary hover:text-primary-foreground"
+                >
+                  {copied ? (
+                    <Check className="size-3" />
+                  ) : (
+                    <Copy className="size-3" />
+                  )}
+                  {copied ? "Tersalin!" : "Salin Tautan"}
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+
+        <p className="mt-3 text-center text-xs text-muted-foreground">
+          Geser atau tekan tombol untuk berpindah halaman. Gunakan tautan
+          #page/N untuk membuka halaman tertentu.
+        </p>
       </div>
     </div>
   );
