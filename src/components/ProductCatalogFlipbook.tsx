@@ -6,7 +6,7 @@ import {
   GlobalWorkerOptions,
 } from "pdfjs-dist/legacy/build/pdf.mjs";
 import pdfWorkerUrl from "pdfjs-dist/build/pdf.worker.min.mjs?url";
-import catalogPdfUrl from "@/data/KATALOG LOKA RAK_compressed.pdf";
+import catalogPdfUrl from "@/data/Catalog Media Jaya Rak 2026.pdf";
 import { cn } from "@/lib/utils";
 import {
   AlertCircle,
