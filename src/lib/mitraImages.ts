@@ -11,6 +11,7 @@ import mitraImage10 from "@/assets/img/mitra/IMG-20260617-WA0019.jpg";
 import mitraImage11 from "@/assets/img/mitra/IMG-20260617-WA0020.jpg";
 import mitraImage12 from "@/assets/img/mitra/toserba-sunan-drajat.jpeg";
 import mitraImage13 from "@/assets/img/mitra/dapur kita.webp";
+import mitraImage14 from "@/assets/img/mitra/WhatsApp Image 2026-06-24 at 12.35.31.jpeg";
 import { getImage } from "astro:assets";
 
 const MITRA_IMAGE_WIDTH = 300;
@@ -68,6 +69,10 @@ export const mitraImages = [
   {
     src: mitraImage13,
     alt: "Mitra Image 13",
+  },
+  {
+    src: mitraImage14,
+    alt: "Mitra Image 14",
   },
 ];
 
